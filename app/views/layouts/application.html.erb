@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Launchofico</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="" name="keywords">
+<meta content="" name="description">
+<!-- Favicons -->
+<!-- <link href="/assets/" rel="icon"> -->
+<!-- <link href="/assets/" rel="apple-touch-icon">  -->
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+        <!-- Content Wrapper. Contains page content -->
+        <%= render partial: 'layouts/application_header' %>
+
+    <!-- <div class="content-wrapper"> -->
+      <!-- Content Header (Page header) -->
+      <!-- Main content -->
+      <!-- <section class="content"> -->
+        <%#= render partial: 'layouts/alert' %>
+        <%= yield %>
+      <!-- </section> --><!-- /.content -->
+   <!--  </div> --><!-- /.content-wrapper -->
+    <%#= yield %>
+        <%= render partial: 'layouts/application_footer' %>
+  </body>
+</html>
