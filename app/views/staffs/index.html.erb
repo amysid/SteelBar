@@ -1,0 +1,147 @@
+<h1>Staff Management</h1>
+    
+
+<div class="row">
+  <%= form_tag import_staffs_path, multipart: true do%>
+  <div class="form-group" style="float: right;">
+    <div class="col-md-2 "  style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></div>
+    <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
+  </div>
+  <%end%>
+</div> 
+
+
+
+
+<div class="box box-info">
+
+<%= form_with scope: :search, url: staffs_path, method: :get,autocomplete: :off,local: true do |f| %>
+       
+    <div class="box-body">
+        <div class="row">
+            <!-- /.col -->
+           
+            <!-- /.col -->
+            <div class="col-md-2">
+                <!-- /.form-group -->
+                <div class="form-group">
+                   <input type="text" name="search" class="form-control custom-control" placeholder="Search by staff name" id="staff_serch">
+                </div>
+            </div>
+
+          
+            <div class="col-md-3">
+                <!-- /.form-group -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <%= f.submit "Search", class: "btn btn-block btn-primary", title: "Search"%>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <%= link_to '<button class="btn btn-block btn-danger" type="button">Cancel</button>'.html_safe ,staffs_path, title: "Cancel" %>
+                    </div>
+                </div>
+                
+                <!-- /.form-group -->
+            </div>
+              <%= link_to "Add New Staff", new_staff_path, class:"btn btn-success margin-top-25", title: "Add New Staff"%> 
+
+              <%= link_to "Download Sample CSV", staffs_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
+            
+
+            <!-- /.col -->
+            <!-- /.row -->
+        </div>
+    </div>
+    <% end %>
+  
+    <div class="box-body table-responsive ">
+        <table class="table table-hover table-bordered">
+            <tbody>
+                <tr style="background-color: #D9D7D7;">
+                    <th>Sr_No.</th>
+                  <th>ID</th>
+                  <th> name</th>
+                  <th> Email</th>
+                  <th> Joined At</th>
+
+
+                  <th colspan="3">Actions</th>
+
+                </tr>
+                <br/>
+                 <% if @staffs.blank? %>
+                      <div class="global-heading user-head">No Record Found. </div>
+                   <% else %>
+                <% @staffs&.each do |m| %>
+               <tr>
+                  <td><%= @s_no += 1 %></td>
+                  <td><%= m.try(:id)%></td>
+                  <td><%= m.try(:name)%></td>
+                  <td><%= m.try(:email)%></td>
+                  <td><%= m.try(:created_at)%></td>
+
+
+                  <td><%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_staff_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                    <% if m.status == true %>
+                      <%= link_to '<em class="fa fa-unlock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn btn-sm btn-primary " ,title: 'Unblock', data: { confirm: "Are you sure you want to unblock this staff?" } %>
+                    <% else %>
+                      <%= link_to '<em class="fa fa-lock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn btn-sm btn-danger " ,title: 'Block', data: { confirm: "Are you sure you want to block this staff?" } %>
+                    <% end %>
+                  </td>
+                </tr>
+                <%end%>
+                <%end%>
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+        <div class="digg_pagination pull-right">
+                <%= will_paginate @staffs %>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+   .margin-top-25 {
+    margin-top: 25px;
+    }
+    .margin-top-60{
+    margin-top: -60px;
+    margin-left: 1050px;
+    }
+    .margin-top-5{
+        margin-left: 1060px;
+        margin-top: 5px;
+    }
+</style>
+
+<!--js CSV file validation-->
+
+<script type="text/javascript">
+ $(function()
+{
+  $('#btnsubmit').on('click',function()
+  {
+    $(this).val('Please wait ...')
+      .attr('disabled','disabled');
+    $('#theform').submit();
+  });
+  
+});
+
+</script>
+
+<!--js csv validation-->
+<style type="text/css">
+    input,
+button,
+select,
+textarea {
+  width: 100px;
+}
+</style>

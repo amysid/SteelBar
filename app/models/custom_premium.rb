@@ -1,0 +1,2 @@
+class CustomPremium < ApplicationRecord
+end

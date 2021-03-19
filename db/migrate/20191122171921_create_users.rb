@@ -1,7 +1,7 @@
 class CreateUsers < ActiveRecord::Migration[5.2]
   def change
     create_table :users do |t|
-      t.string :full_name, default: ""
+      t.string :name, default: ""
       t.string :email, default: ""
       t.string :mobile, default: ""
       t.string :email, default: ""
@@ -11,6 +11,8 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :password_digest, default: ""
       t.string :verificatin_link, default: ""
       t.string :image
+      t.boolean :status, default: false
+      
 
       t.timestamps
     end

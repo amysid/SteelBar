@@ -1,0 +1,120 @@
+<h1>Length Edge Management</h1>
+    
+
+<div class="row">
+  <%= form_tag import_length_edges_path, multipart: true do%>
+  <div class="form-group" style="float: right;">
+    <div class="col-md-2 "  style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></div>
+    <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
+  </div>
+  <%end%>
+</div> 
+
+
+
+
+<div class="box box-info">
+       
+    <div class="box-body">
+        <div class="row">
+  <div class="form-group" style="float: right;">
+              <%= link_to "Add New Length Edge", length_edges_new_path, class:"btn btn-success margin-top-25", title: "Add New Length Edge"%> 
+              
+              <%= link_to "Download Sample CSV", length_edges_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
+            
+ </div>
+        </div>
+    </div>
+    <div class="box-body table-responsive ">
+        <table class="table table-hover table-bordered">
+            <tbody>
+                <tr style="background-color: #D9D7D7;">
+                    <th>ID</th>
+                  <th> Source</th>
+                  <th> Grade</th>
+                  <th> Length Cost Add</th>
+                  <th>Edge Cost Add</th>
+                  <th colspan="3">Actions</th>
+                  
+                </tr>
+                <br/>
+                 <% if @le.blank? %>
+                      <div class="global-heading user-head">No Record Found. </div>
+                   <% else %>
+                <% @le&.each do |m| %>
+                <tr>
+                    <td>
+                        <%= @s_no+=1 %>
+                    </td>
+                    
+                    <td>
+                        <%= m&.source %>
+                      
+                    </td>
+                    <td>
+                        <%= m&.grade %>
+                    </td>
+                    <td>
+                        <%= m&.length_cost_add %>
+                    </td>
+                    <td>
+                        <%= m&.edge_cost_add %>
+                    </td>
+                    <td>
+                    <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_length_edge_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                                      
+                    <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  length_edge_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
+                
+                  </td>
+                </tr>
+                <%end%>
+                <%end%>
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+        <div class="digg_pagination pull-right">
+                <%= will_paginate @le %>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+   .margin-top-25 {
+    margin-top: 25px;
+    }
+    .margin-top-60{
+    margin-top: -60px;
+    margin-left: 1050px;
+    }
+    .margin-top-5{
+        margin-left: 1060px;
+        margin-top: 5px;
+    }
+</style>
+
+<!--js CSV file validation-->
+
+<script type="text/javascript">
+ $(function()
+{
+  $('#btnsubmit').on('click',function()
+  {
+    $(this).val('Please wait ...')
+      .attr('disabled','disabled');
+    $('#theform').submit();
+  });
+  
+});
+
+</script>
+
+<!--js csv validation-->
+<style type="text/css">
+    input,
+button,
+select,
+textarea {
+  width: 100px;
+}
+</style>

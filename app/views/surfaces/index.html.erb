@@ -1,0 +1,59 @@
+<section class="content">
+      <div class="clearfix">
+        <div class="global-heading user-head"><legend>Surface Management</legend></div>
+        <div class="aduser-btn"><a href="/surfaces/new" class="btn btn-add" title="Add Surface"><i class="fa fa-plus"></i> Add New Surface</a></div>
+      </div>
+    
+     <div id="country-content">
+        <%#= render partial: "index"%>
+        <div class="clearfix">
+        <h3>List</h3>
+        <div class="table-responsive cus-table">
+           <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Sr_No.</th>
+                  <th> Grade</th>
+                  <th> Surface</th>
+                  <th> Cost</th>
+                  <th> Unit</th>
+
+                  <th colspan="3">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                 <% if @surface.blank? %>
+                      <div class="global-heading user-head">No Record Found. </div>
+                   <% else %>
+              <% @surface.each do |m| %>
+                <tr>
+                  <td><%= @s_no += 1 %></td>
+                  <td><%= m.try(:grade)%></td>
+                  <td><%= m.try(:surface)%></td>
+                  <td><%= m.try(:cost)%></td>
+                  <td><%= m.try(:unit)%></td>
+
+
+
+                  <td>
+                    <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_surface_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                                      
+                    <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  surface_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
+                
+                  </td>
+                </tr>
+              <% end %>
+              <%end%>
+              </tbody>
+            </table>
+            
+          </div>
+        </div>
+     </div>
+    </section>
+    <div class="box-footer">
+        <div class="digg_pagination pull-right">
+                <%= will_paginate @surface %>
+        </div>
+    </div>
+

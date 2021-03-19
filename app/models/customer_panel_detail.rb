@@ -1,0 +1,2 @@
+class CustomerPanelDetail < ApplicationRecord
+end

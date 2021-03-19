@@ -1,0 +1,34 @@
+<section class="custom-wrap">
+  <div class="container">
+    <div class="Dashboard-section">
+      <h4>Panel Details</h4>
+      <%= form_with scope: @gp, url: general_panel_path, method: :put, id: "new_gp", local: true do |f|%>
+        <div class="row">
+    <div class="col-md-10">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Tax Ref(%)</label>
+            <%= f.text_field :tax_ref,class: "form-control"  %>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Exch. Rate</label>
+            <%= f.text_field :exch_rate,class: "form-control"  %>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Local Transportation Cost</label>
+            <%= f.text_field :local_transportation_cost,class: "form-control" %>
+        </div>
+            <div class="form-group">
+            <label for="exampleInputEmail1">EXP(%)</label>
+            <%= f.text_field :exp,class: "form-control"%>
+        </div>
+
+        
+    </div>
+    <div class="col-md-10" style="margin-left: 15px;">
+        <%= f.submit "Save" ,class: "btn btn-success"%>
+    </div>
+</div>
+      <% end %>
+    </div>
+  </div>
+</section>

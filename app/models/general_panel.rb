@@ -1,0 +1,2 @@
+class GeneralPanel < ApplicationRecord
+end

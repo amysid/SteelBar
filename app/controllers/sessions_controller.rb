@@ -1,13 +1,13 @@
 class SessionsController < ApplicationController
   layout 'admin_lte_2_login'
-  before_action :authenticated_user, only: [:destroy]
-  before_action :un_authenticated,except: [:destroy]#[:new,:create,:forgot_password,:send_link,:change_password]
+  before_action :authenticated_user, only: [:destroy,:profile,:update_profile]
+  before_action :un_authenticated,except: [:destroy,:profile,:update_profile]#[:new,:create,:forgot_password,:send_link,:change_password]
   def new
     @user = User.new
   end
 
   def create
-    @user = User.find_by(email: params[:user][:email])
+    @user = User.find_by(email: params[:user][:email]) || Staff.find_by(email: params[:user][:email])
     if @user && @user.authenticate(params[:user][:password])
       login
       flash[:notice] = ["Login successfully."]
@@ -32,7 +32,23 @@ class SessionsController < ApplicationController
       redirect_to login_path
     end
   end
+  
+  def profile
+    @user = current_user
+  end
 
+   def update_profile
+    @user = current_user
+    if @user.update(user_params)
+      flash[:notice] = ["Profile updated successfully."]
+      redirect_to root_path
+    else
+      flash[:alert] = @user.errors.full_messages
+      render :profile
+    end
+    
+  end
+  
   def change_password
     if params[:auth_token].present?
       @user = User.find_by(verificatin_link: params[:auth_token])

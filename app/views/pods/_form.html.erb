@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-md-10">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Export Port</label>
+            <%= f.text_field :export_pod,class: "form-control" , placeholder: "Enter Export Port" %>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Freight/20” Container Cost Add</label>
+            <%= f.text_field :container_cost_add,class: "form-control" , placeholder: "Enter Freight/20” Container Cost Add" %>
+        </div>
+    </div>
+    <div class="col-md-10" style="margin-left: 15px;">
+        <%= f.submit "Save" ,class: "btn btn-success"%>
+        <%= link_to "Cancel", pods_path,class: "btn btn-danger" %>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<section class="content">
+      <div class="clearfix">
+        <div class="global-heading user-head"><legend>Custom Premium Management</legend></div>
+        <!-- <div class="aduser-btn"><a href="/Custom Premiums/new" class="btn btn-add" title="Add Custom Premium"><i class="fa fa-plus"></i> Add New Custom Premium</a></div> -->
+      </div>
+    
+     <div id="country-content">
+        <%#= render partial: "index"%>
+        <div class="clearfix">
+        <h3>List</h3>
+        <div class="table-responsive cus-table">
+           <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Sr_No.</th>
+                  <th> Number Entered</th>
+                  <th> Custom Premium Per MT to Total Cost Calculation</th>
+
+                  <!-- <th colspan="3">Actions</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                 <% if @cp.blank? %>
+                      <div class="global-heading user-head">No Record Found. </div>
+                   <% else %>
+              <% @cp.each do |m| %>
+                <tr>
+                  <td><%= @s_no += 1 %></td>
+                  <td><%= m.try(:number_entered)%></td>
+                  <td><%= m.try(:custom_premium_per_mt)%></td>
+
+
+
+                 <!--  <td>
+                    <%#= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_pod_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                                      
+                    <%#= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  pod_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
+                
+                  </td> -->
+                </tr>
+              <% end %>
+              <%end%>
+              </tbody>
+            </table>
+            
+          </div>
+        </div>
+     </div>
+    </section>
+    <div class="box-footer">
+        <div class="digg_pagination pull-right">
+                <%= will_paginate @cp %>
+        </div>
+    </div>
+
