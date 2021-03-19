@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2021_03_06_102215) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "coatings", force: :cascade do |t|
     t.string "coating"
     t.string "coating_type"
@@ -32,7 +35,7 @@ ActiveRecord::Schema.define(version: 2021_03_06_102215) do
     t.integer "grade"
     t.string "surface"
     t.integer "profit"
-    t.integer "customer_panel_id"
+    t.bigint "customer_panel_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_panel_id"], name: "index_customer_panel_details_on_customer_panel_id"
@@ -103,7 +106,7 @@ ActiveRecord::Schema.define(version: 2021_03_06_102215) do
     t.integer "base_price"
     t.integer "additional_cost"
     t.integer "price"
-    t.integer "supplier_id"
+    t.bigint "supplier_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["supplier_id"], name: "index_price_lists_on_supplier_id"
@@ -150,4 +153,6 @@ ActiveRecord::Schema.define(version: 2021_03_06_102215) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "customer_panel_details", "customer_panels"
+  add_foreign_key "price_lists", "suppliers"
 end
