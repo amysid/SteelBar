@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'suppliers/index'
+  get 'suppliers/new'
   get 'length_edges/new'
   get 'length_edges/index'
   get 'length_edges/show'
@@ -42,16 +44,40 @@ Rails.application.routes.draw do
     end
 
   end
+  resources :price_lists do
+    collection do
+     post :import
+    end
+  end
+  resources :suppliers
+
   resources :general_panels
+
   resources :length_edges do
      collection do
      post :import
     end
   end
-  resources :surfaces
-  resources :coatings
-  resources :pods
-  resources :custom_premiums
+  resources :surfaces do
+    collection do
+     post :import
+    end
+  end
+  resources :coatings do
+    collection do
+     post :import
+    end
+  end
+  resources :pods do
+    collection do
+     post :import
+    end
+  end
+  resources :custom_premiums do
+    collection do
+     post :import
+    end
+  end
 
   resources :enquiries do
     collection do

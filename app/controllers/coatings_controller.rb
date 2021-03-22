@@ -7,7 +7,15 @@ before_action :find_coating, only: [:edit, :show, :update, :destroy]
     @s_no = 0
   	@coating = Coating.all
     @coating = @coating.order("created_at desc").paginate(:page => params[:page], :per_page => 20)
+    respond_to do |format|
+      format.html
+      format.csv { send_data @coating.to_csv }
+    end
+  end
 
+  def import
+    Coating.import(params[:file])
+    redirect_to coatings_path, notice: ["Data Imported"]
   end
   
   def new

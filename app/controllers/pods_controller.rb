@@ -7,7 +7,15 @@ class PodsController < ApplicationController
     @s_no = 0
   	@pod = Pod.all
     @pod = @pod.order("created_at desc").paginate(:page => params[:page], :per_page => 20)
+    respond_to do |format|
+      format.html
+      format.csv { send_data @pod.to_csv }
+    end
+  end
 
+  def import
+    Pod.import(params[:file])
+    redirect_to pods_path, notice: ["Data Imported"]
   end
   
   def new

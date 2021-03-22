@@ -7,7 +7,15 @@ before_action :find_cp, only: [:edit, :show, :update, :destroy]
     @s_no = 0
   	@cp = CustomPremium.all
     @cp = @cp.order("created_at desc").paginate(:page => params[:page], :per_page => 20)
-
+    respond_to do |format|
+      format.html
+      format.csv { send_data @cp.to_csv }
+    end
+  end
+  
+  def import
+    CustomPremium.import(params[:file])
+    redirect_to custom_premiums_path, notice: ["Data Imported"]
   end
   
   def new

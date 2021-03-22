@@ -14,10 +14,6 @@
 
 
 <div class="box box-info">
-<%#= form_tag import_admin_users_path, multipart: true, id: "controls-form", class: "shubham" do %>
-             <%#= file_field_tag :file, id: "fileinput", accept: ".csv" %>
-             <%#= submit_tag "Import" %>
-              <%# end %>
 
 <%= form_with scope: :search, url: enquiries_path, method: :get,autocomplete: :off,local: true do |f| %>
        
@@ -30,7 +26,7 @@
                 <!-- /.form-group -->
                 <div class="form-group">
                     <label>Select status:</label>
-                    <%#= f.select(:name, options_for_select(Enquiry.order(:name).pluck(:name, :id)),(params.dig :search, :search)) , {:include_blank => "Select Customer Name"}, {:class => "form-control"} ) %>
+
                     <%= f.select(:name, options_for_select(Enquiry.order(:name).pluck(:name, :id),(params.dig :search, :search)) , {:include_blank => "Select Customer"}, {:class => "form-control"} ) %>
 
                 </div>
@@ -86,13 +82,7 @@
         </div>
     </div>
     <% end %>
-    <!--Export CSV-->
-    <%#= form_tag import_admin_users_path, multipart: true, id: "controls-form" do %>
-    <%#= file_field_tag :file, id: "fileinput", accept: ".csv", class:"margin-top-60" %>
-    <%#= submit_tag "Import", class:"btn btn-success margin-top-5" %>
-    <%# end %>
-    <!--Export CSV code finish-->
-
+    
     <div class="box-body table-responsive ">
         <table class="table table-hover table-bordered">
             <tbody>

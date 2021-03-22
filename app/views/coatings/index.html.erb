@@ -1,17 +1,37 @@
-<section class="content">
-      <div class="clearfix">
-        <div class="global-heading user-head"><legend>Coating Management</legend></div>
-        <div class="aduser-btn"><a href="/coatings/new" class="btn btn-add" title="Add Coating"><i class="fa fa-plus"></i> Add New Coating</a></div>
-      </div>
+<h1>Coating Management</h1>
     
-     <div id="country-content">
-        <%#= render partial: "index"%>
-        <div class="clearfix">
-        <h3>List</h3>
-        <div class="table-responsive cus-table">
-           <table class="table table-bordered table-striped">
-              <thead>
-                <tr>
+
+<div class="row">
+  <%= form_tag import_coatings_path, multipart: true do%>
+  <div class="form-group" style="float: right;">
+    <div class="col-md-2 "  style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></div>
+    <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
+  </div>
+  <%end%>
+</div> 
+
+
+
+
+<div class="box box-info">
+    <div class="box-body">
+        <div class="row">
+          <div class="col-md-12">
+            
+            <div class="form-group" style="text-align: right;">
+                        <%= link_to "Add New Coating", new_coating_path, class:"btn btn-success", title: "Add Coating"%> 
+                        
+                        <%= link_to "Download Sample CSV", coatings_path(format: "csv"), class:"btn btn-success", title: "Download Sample CSV"%> 
+                      
+           </div>
+        </div>
+      </div>
+    </div> 
+
+    <div class="box-body table-responsive ">
+        <table class="table table-hover table-bordered">
+            <tbody>
+                <tr style="background-color: #D9D7D7;">
                   <th>Sr_No.</th>
                   <th> Coating Type</th>
                   <th> Coating</th>
@@ -19,13 +39,13 @@
                   <th> Reading</th>
 
                   <th colspan="3">Actions</th>
+                  
                 </tr>
-              </thead>
-              <tbody>
+                <br/>
                  <% if @coating.blank? %>
                       <div class="global-heading user-head">No Record Found. </div>
                    <% else %>
-              <% @coating.each do |m| %>
+                <% @coating&.each do |m| %>
                 <tr>
                   <td><%= @s_no += 1 %></td>
                   <td><%= m.try(:coating_type)%></td>
@@ -41,19 +61,56 @@
                     <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  coating_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
                 
                   </td>
+
                 </tr>
-              <% end %>
-              <%end%>
-              </tbody>
-            </table>
-            
-          </div>
-        </div>
-     </div>
-    </section>
+                <%end%>
+                <%end%>
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
     <div class="box-footer">
         <div class="digg_pagination pull-right">
                 <%= will_paginate @coating %>
         </div>
     </div>
+</div>
+<style type="text/css">
+   .margin-top-25 {
+    margin-top: 25px;
+    }
+    .margin-top-60{
+    margin-top: -60px;
+    margin-left: 1050px;
+    }
+    .margin-top-5{
+        margin-left: 1060px;
+        margin-top: 5px;
+    }
+</style>
 
+<!--js CSV file validation-->
+
+<script type="text/javascript">
+ $(function()
+{
+  $('#btnsubmit').on('click',function()
+  {
+    $(this).val('Please wait ...')
+      .attr('disabled','disabled');
+    $('#theform').submit();
+  });
+  
+});
+
+</script>
+
+<!--js csv validation-->
+<style type="text/css">
+    input,
+button,
+select,
+textarea {
+  width: 100px;
+}
+</style>

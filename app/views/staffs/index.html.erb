@@ -10,9 +10,6 @@
   <%end%>
 </div> 
 
-
-
-
 <div class="box box-info">
 
 <%= form_with scope: :search, url: staffs_path, method: :get,autocomplete: :off,local: true do |f| %>
@@ -34,24 +31,26 @@
                 <!-- /.form-group -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>&nbsp;</label>
                         <%= f.submit "Search", class: "btn btn-block btn-primary", title: "Search"%>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>&nbsp;</label>
                         <%= link_to '<button class="btn btn-block btn-danger" type="button">Cancel</button>'.html_safe ,staffs_path, title: "Cancel" %>
                     </div>
                 </div>
                 
                 <!-- /.form-group -->
             </div>
-              <%= link_to "Add New Staff", new_staff_path, class:"btn btn-success margin-top-25", title: "Add New Staff"%> 
+            <div class="col-md-7">
+              <div style="align-items: end; justify-content: flex-end; display: flex;">
+                
+              <%= link_to "Add New Staff", new_staff_path, class:"btn btn-success",style: "margin-right: 10px", title: "Add New Staff"%> 
 
-              <%= link_to "Download Sample CSV", staffs_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
-            
+              <%= link_to "Download Sample CSV", staffs_path(format: "csv"), class:"btn btn-success", title: "Download Sample CSV"%> 
+              </div>
+            </div>
 
             <!-- /.col -->
             <!-- /.row -->

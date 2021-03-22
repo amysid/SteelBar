@@ -15,20 +15,20 @@
 
 <div class="box box-info">
 
-       
+      
+
     <div class="box-body">
         <div class="row">
-  
-  <div class="form-group" style="float: right;">
-          
-              <%= link_to "Add Customer", new_customer_panel_path, class:"btn btn-success margin-top-25", title: "Add Customer"%> 
-
-              <%= link_to "Download Sample CSV", customer_panels_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
+          <div class="col-md-12">
             
-  </div>
-            <!-- /.col -->
-            <!-- /.row -->
+            <div class="form-group" style="text-align: right;">
+                        <%= link_to "Add Customer", new_customer_panel_path, class:"btn btn-success", title: "Add Customer"%> 
+                        
+                        <%= link_to "Download Sample CSV", customer_panels_path(format: "csv"), class:"btn btn-success", title: "Download Sample CSV"%> 
+                      
+           </div>
         </div>
+      </div>
     </div>
   
     <div class="box-body table-responsive ">
