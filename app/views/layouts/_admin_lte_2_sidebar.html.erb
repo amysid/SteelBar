@@ -24,8 +24,8 @@
       <li><a href="<%=staffs_path%>"><i class="fa fa-users"></i> <span>Staff Management</span></a></li>
       <%end%>
       <li><a href="<%=enquiries_path%>"><i class="fa fa-users"></i> <span>Enquiry Management</span></a></li>
-      <li><a href="<%=suppliers_path%>"><i class="fa fa-users"></i> <span>Price List Management</span></a></li>
       <% if User.pluck(:email).include?(current_user.email) %>
+      <li><a href="<%=suppliers_path%>"><i class="fa fa-users"></i> <span>Price List Management</span></a></li>
       <li><a href="<%=customer_panels_path%>"><i class="fa fa-users"></i> <span>Customer Panel Management</span></a></li>
       <%a = GeneralPanel&.first&.id%>
       <li><a href="<%=edit_general_panel_path(a)%>"><i class="fa fa-users"></i> <span>General Panel Management</span></a></li>
