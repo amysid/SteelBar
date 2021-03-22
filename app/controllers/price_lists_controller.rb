@@ -26,7 +26,7 @@ class PriceListsController < ApplicationController
     @supplier = Supplier.find(params["supplier"]["id"])
     @pl = @supplier.price_lists.new(pl_params)
     if @pl.save!
-      flash[:notice] = ["Pod Created Successfully."]
+      flash[:notice] = ["Created Successfully."]
       redirect_to suppliers_path
     else
       flash[:alert] = @pl.errors.full_messages
