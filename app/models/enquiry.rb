@@ -8,7 +8,7 @@ class Enquiry < ApplicationRecord
   
    def self.to_csv(options = {})
     CSV.generate(options) do |csv|
-     cols = ["name", "source", "grade", "classification","surface", "thick", "width", "edge", "length", "package_wt", "coating", "coating_type", "quantity_mt", "custom_premium", "port", "unit_price", "usd_price"]
+     cols = ["name", "source", "grade", "classification","surface", "thick", "width", "edge", "length", "package_wt", "coating", "coating_type", "quantity_mt", "custom_premium", "port"]
      csv << cols
     end
   end
