@@ -43,11 +43,3 @@ $(document).on('ready',function() {
 
   });
 });
-
-function set_side_bar_status(){
-  var body_class = document.body.className;
-  body_class = body_class.replace('sidebar-collaps','');
-  var c_value = getCookie("sidebar-collapse");
-  body_class = body_class + ` ${c_value}`;
-    // document.body.className = body_class;
-}
