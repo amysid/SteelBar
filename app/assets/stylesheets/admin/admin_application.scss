@@ -35,3 +35,65 @@
   font-size: 24px;
   padding-bottom: 15px;
 }
+
+  .cover-btns{
+    text-align: center;
+    width: 100%;
+
+  }
+  .single-btn{
+    display: inline-block;
+    padding: 7px 20px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 10px;
+  }
+  .my-btn{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #aaaab378;
+  padding: 10px;
+
+  }
+  .btn-custom{
+    padding: 6px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    display: block;
+    margin-right: 20px;
+    background: #fff;
+
+  }
+  .two-btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .btn-custom:last-child{
+    margin-right: 0px;
+  }
+.cover-select {
+    background: #3932326e;
+    width: 100%;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px 0px;
+}
+.sub-seclect{
+  width: 100%;
+  max-width: 80%;
+  margin: 0 auto;
+}
+.contant-select {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+.contant-select h5{
+  font-size: 20px;
+  color: #000;
+  margin-right: 45px;
+}

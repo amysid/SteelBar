@@ -9,8 +9,9 @@ class PriceList < ApplicationRecord
 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
-      cols = ["grade"]
+      cols = ["grade", "surface", "min_thickness_in_mm", "max_thickness_in_mm", "width", "package", "base_price", "additional_cost", "price"]
      csv << cols
     end
   end
 end
+
