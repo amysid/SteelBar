@@ -1,7 +1,7 @@
 <div class="my-btn">
   <h4><%= @supplier.name%> Supplier</h4>
   <div class="two-btn">
-    <%= form_tag import_coatings_path, multipart: true do%>
+    <%= form_tag import_price_lists_path, multipart: true do%>
       <div class="form-group">
         <div class="col-md-2 "  style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></div>
         <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
