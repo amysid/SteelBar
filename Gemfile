@@ -42,6 +42,7 @@ gem 'momentjs-rails', '~> 2.20', '>= 2.20.1'
 gem 'ckeditor', '~> 4.2'
 gem 'TimeFeature', '~> 0.1.0'
 gem 'adminlte2-rails', '~> 0.0.6'
+gem 'nested_form'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

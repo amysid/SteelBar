@@ -1,5 +1,6 @@
 class CustomerPanel < ApplicationRecord
-   has_many :customer_panel_details
+  has_many :customer_panel_details, inverse_of: :customer_panel
+  accepts_nested_attributes_for :customer_panel_details, reject_if: :all_blank, allow_destroy: true
  require 'csv'
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
