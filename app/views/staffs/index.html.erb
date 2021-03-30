@@ -1,14 +1,16 @@
-<h1>Staff Management</h1>
-    
+<div class="my-btn">
+  <h4>Staff Management</h4>
+  <div class="two-btn">
+    <%= form_tag import_staffs_path, multipart: true do%>
+      <div class="form-group">
+        <div class="col-md-2 "  style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></div>
+        <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
+      </div>
+    <%end%>
 
-<div class="row">
-  <%= form_tag import_staffs_path, multipart: true do%>
-  <div class="form-group" style="float: right;">
-    <div class="col-md-2 "  style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></div>
-    <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
   </div>
-  <%end%>
-</div> 
+</div>
+
 
 <div class="box box-info">
 
@@ -59,14 +61,16 @@
     <% end %>
   
     <div class="box-body table-responsive ">
-        <table class="table table-hover table-bordered">
+        <!-- <table class="table table-hover table-bordered"> -->
+        <table id="staffs_table" class="stripe row-border order-column dataTables_wrapper table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info" style="width:100%">
+        
             <tbody>
                 <tr style="background-color: #D9D7D7;">
-                    <th>Sr_No.</th>
+                  <th>Sr_No.</th>
                   <th>ID</th>
-                  <th> name</th>
-                  <th> Email</th>
-                  <th> Joined At</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Joined At</th>
 
 
                   <th colspan="3">Actions</th>
@@ -87,9 +91,9 @@
 
                   <td><%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_staff_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
                     <% if m.status == true %>
-                      <%= link_to '<em class="fa fa-unlock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn btn-sm btn-primary " ,title: 'Unblock', data: { confirm: "Are you sure you want to unblock this staff?" } %>
+                      <%= link_to '<em class="fa fa-unlock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn  btn-primary " ,title: 'Unblock', data: { confirm: "Are you sure you want to unblock this staff?" } %>
                     <% else %>
-                      <%= link_to '<em class="fa fa-lock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn btn-sm btn-danger " ,title: 'Block', data: { confirm: "Are you sure you want to block this staff?" } %>
+                      <%= link_to '<em class="fa fa-lock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn  btn-danger " ,title: 'Block', data: { confirm: "Are you sure you want to block this staff?" } %>
                     <% end %>
                   </td>
                 </tr>
@@ -99,11 +103,11 @@
         </table>
     </div>
     <!-- /.box-body -->
-    <div class="box-footer">
+  <!--   <div class="box-footer">
         <div class="digg_pagination pull-right">
-                <%= will_paginate @staffs %>
+                <%#= will_paginate @staffs %>
         </div>
-    </div>
+    </div> -->
 </div>
 <style type="text/css">
    .margin-top-25 {
@@ -119,7 +123,6 @@
     }
 </style>
 
-<!--js CSV file validation-->
 
 <script type="text/javascript">
  $(function()
@@ -144,3 +147,4 @@ textarea {
   width: 100px;
 }
 </style>
+

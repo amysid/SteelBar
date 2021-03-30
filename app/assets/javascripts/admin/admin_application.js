@@ -15,6 +15,8 @@
 //= require app
 //= require jquery.slimscroll.js
 //= require popper.min.js
+//= require chartkick
+//= require Chart.bundle
 //= require_tree ../../../../vendor/assets/javascripts
 //= require_tree .
 
@@ -29,3 +31,15 @@ var ready = function () {
 document.addEventListener('turbolinks:load', ready);
 document.addEventListener('turbolinks:reload', ready);
 $(document).ready(ready);
+
+$(document).on('ready',function() {
+  $('#lang').change(function(event) {
+
+    window.location.href.split('/')[3] = $(this).val();
+    var path = window.location.href.split('/');
+    path[3] = $(this).val();
+    path = path.join('/');
+    window.location.href = path
+
+  });
+});

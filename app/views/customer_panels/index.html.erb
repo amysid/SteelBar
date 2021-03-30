@@ -1,15 +1,15 @@
-<h1>Customer Panel Management</h1>
-    
-
-<div class="row">
-  <%= form_tag import_customer_panels_path, multipart: true do%>
-  <div class="form-group" style="float: right;">
-    <div class="col-md-2 "  style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></div>
-    <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
+<div class="my-btn">
+  <h4>Customer Panel Management</h4>
+  <div class="two-btn">
+    <%= form_tag import_customer_panels_path, multipart: true do%>
+      <div class="form-group">
+        <div class="col-md-2 "  style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></div>
+        <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
+      </div>
+    <%end%>
+    <!-- <a href="#" class="btn-custom">First</a> -->
   </div>
-  <%end%>
-</div> 
-
+</div>
 
 
 

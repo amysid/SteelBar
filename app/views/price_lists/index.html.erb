@@ -1,14 +1,13 @@
 <div class="my-btn">
   <h4><%= @supplier.name%> Supplier</h4>
   <div class="two-btn">
-    <%#= form_tag import_coatings_path, multipart: true do%>
-      <!-- <div class="form-group">
-        <div class="col-md-2 "  style="margin-right: 120px;"><%#=file_field_tag :file, class: 'form-control-file', required: true %></div>
-        <div class="col-md-3"><%#= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
-      </div> -->
-    <%#end%>
-    <%#= link_to "Add New Details", new_price_list_path, class:"btn btn-primary", title: "Add Details"%> 
-    <%=link_to 'Add New Details', {:controller => "price_lists", :action => "new", :Supplier_id => @supplier.id }, class: "btn btn-primary"%>
+    <%= form_tag import_price_lists_path, multipart: true do%>
+      <div class="form-group">
+        <div class="col-md-2 "  style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></div>
+        <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
+      </div>
+    <%end%>
+    <%=link_to 'Add New Details', {:controller => "price_lists", :action => "new", :supplier_id => @supplier.id }, class: "btn btn-primary"%>
 
     <!-- <a href="#" class="btn-custom">First</a> -->
   </div>
@@ -83,69 +82,3 @@
     </div>
 
 
-<style>
-  .cover-btns{
-    text-align: center;
-    width: 100%;
-
-  }
-  .single-btn{
-    display: inline-block;
-    padding: 7px 20px;
-    font-size: 16px;
-    background-color: #fff;
-    color: #000;
-    border-radius: 10px;
-  }
-  .my-btn{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #aaaab378;
-  padding: 10px;
-
-  }
-  .btn-custom{
-    padding: 6px 20px;
-    font-size: 16px;
-    border-radius: 10px;
-    display: block;
-    margin-right: 20px;
-    background: #fff;
-
-  }
-  .two-btn{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .btn-custom:last-child{
-    margin-right: 0px;
-  }
-.cover-select {
-    background: #3932326e;
-    width: 100%;
-    max-width: 90%;
-    margin: 0 auto;
-    padding: 20px 0px;
-}
-.sub-seclect{
-  width: 100%;
-  max-width: 80%;
-  margin: 0 auto;
-}
-.contant-select {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 25px;
-}
-.contant-select h5{
-  font-size: 20px;
-  color: #000;
-  margin-right: 45px;
-}
-
-
-
-</style>
