@@ -9,14 +9,16 @@ class Staff < ApplicationRecord
 
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
-     Staff.create! row.to_hash
+      @staff = Staff.new(name: row["Employee Name"], email: row["Email Address"], password: row["Password"], password_confirmation: row["Password"])
+     @staff.save!
     end
   end
+  
   
 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
-     cols = ["name", "email", "password", "password_confirmation"]
+     cols = ["Employee Name", "Email Address", "Password"]
      csv << cols
     end
   end
