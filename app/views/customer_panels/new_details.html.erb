@@ -1,31 +1,175 @@
 <section class="custom-wrap">
   <div class="container">
     <div class="Dashboard-section">
-      <h4>Create Customer Panel Details</h4>
-      <%= form_with model: @cpd, url: create_details_customer_panels_path, method: :post do |f| %>
-        <%#= render "detailsform", f: f %>
-        <div class="row">
-    <div class="col-md-10">
-        <div class="form-group">
-            <label for="exampleInputEmail1">Grade</label>
-            <%= f.text_field :grade,class: "form-control" , placeholder: "Enter Grade" %>
-        </div>
-        <div class="form-group">
-            <label for="exampleInputEmail1">Surface</label>
-            <%= f.text_field :surface,class: "form-control" , placeholder: "Enter Surface" %>
-        </div>
-        <div class="form-group">
-            <label for="exampleInputEmail1">Profit</label>
-            <%= f.text_field :profit,class: "form-control" , placeholder: "Enter Profit" %>
-        </div>
-        <%= f.hidden_field :customer_id, :value => params[:id] %>
-        
+      <h4>Customer Details</h4>
+        <%= nested_form_for @customer_panel, url: create_details_customer_panels_path do |f| %>
+          <%= hidden_field_tag :cp_id, @cp.id %>
+          <table id="customer_panel_details">
+          <thead>
+            <th>Grade</th>
+            <th>Surface</th>
+            <th>Profit</th>
+          </thead>
+          <%= f.fields_for :customer_panel_details, :wrapper => false do |task_form| %>
+            <tr class="fields">
+              <td><%= task_form.text_field :grade, class: "cpd-input" %></td>
+              <td><%= task_form.text_field :surface, class: "cpd-input" %></td>
+              <td><%= task_form.text_field :profit, class: "cpd-input" %></td>
+              <td><%= task_form.link_to_remove do %><i class="fa fa-minus-square-o fa_minus" aria-hidden="true" style="font-size: 1.78em; color: black; margin-bottom: 10px"></i><% end %></td>
+            </tr>
+          <% end %>
+          </table>
+          <p><%= f.link_to_add :customer_panel_details, :data => { :target => "#customer_panel_details" } do %>
+            <i class="fa fa-plus-square-o fa_plus" aria-hidden="true" style="font-size: 1.78em; color: black; margin-left: 595px;"></i>
+          <% end %>
+          </p>
+          <div class="col-md-10" style="text-align: center;">
+            <%= f.submit "ADD", class: "btn btn-success cpd-button" %>
+            <%= button_to "CANCEL", customer_panels_path, class: "btn btn-success cpd-button" %>
+          </div>
+
+        <% end %>
+      </div>
     </div>
-    <div class="col-md-10" style="margin-left: 15px;">
-        <%= f.submit "Save" ,class: "btn btn-success"%>
-    </div>
-</div>
-      <% end %>
-    </div>
-  </div>
-</section>
+  </section>
+<style type="text/css">
+    section.custom-wrap {
+    width: 800px;
+    height: auto;
+    border: 2px solid #797c80;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 20px;
+    }
+    .cpd-input{
+      margin-right: 20px;
+      margin-bottom: 20px;
+    }
+    .cpd-button{
+      width: 130px;
+      border-radius: 10px;
+    }
+    h4:after
+    {
+      content:' ';
+      display:block;
+      border:1px solid #797c80;
+    }
+</style>
+<script>
+  (function($) {
+  window.NestedFormEvents = function() {
+    this.addFields = $.proxy(this.addFields, this);
+    this.removeFields = $.proxy(this.removeFields, this);
+  };
+
+  NestedFormEvents.prototype = {
+    addFields: function(e) {
+      // Setup
+      var link      = e.currentTarget;
+      var assoc     = $(link).data('association');                // Name of child
+      var blueprint = $('#' + $(link).data('blueprint-id'));
+      var content   = blueprint.data('blueprint');                // Fields template
+
+      // Make the context correct by replacing <parents> with the generated ID
+      // of each of the parent objects
+      var context = ($(link).closest('.fields').closestChild('input, textarea, select').eq(0).attr('name') || '').replace(new RegExp('\[[a-z_]+\]$'), '');
+
+      // context will be something like this for a brand new form:
+      // project[tasks_attributes][1255929127459][assignments_attributes][1255929128105]
+      // or for an edit form:
+      // project[tasks_attributes][0][assignments_attributes][1]
+      if (context) {
+        var parentNames = context.match(/[a-z_]+_attributes(?=\]\[(new_)?\d+\])/g) || [];
+        var parentIds   = context.match(/[0-9]+/g) || [];
+
+        for(var i = 0; i < parentNames.length; i++) {
+          if(parentIds[i]) {
+            content = content.replace(
+              new RegExp('(_' + parentNames[i] + ')_.+?_', 'g'),
+              '$1_' + parentIds[i] + '_');
+
+            content = content.replace(
+              new RegExp('(\\[' + parentNames[i] + '\\])\\[.+?\\]', 'g'),
+              '$1[' + parentIds[i] + ']');
+          }
+        }
+      }
+
+      // Make a unique ID for the new child
+      var regexp  = new RegExp('new_' + assoc, 'g');
+      var new_id  = this.newId();
+      content     = $.trim(content.replace(regexp, new_id));
+
+      var field = this.insertFields(content, assoc, link);
+      // bubble up event upto document (through form)
+      field
+        .trigger({ type: 'nested:fieldAdded', field: field })
+        .trigger({ type: 'nested:fieldAdded:' + assoc, field: field });
+      return false;
+    },
+    newId: function() {
+      return new Date().getTime();
+    },
+    insertFields: function(content, assoc, link) {
+      var target = $(link).data('target');
+      if (target) {
+        return $(content).appendTo($(target));
+      } else {
+        return $(content).insertBefore(link);
+      }
+    },
+    removeFields: function(e) {
+      var $link = $(e.currentTarget),
+          assoc = $link.data('association'); // Name of child to be removed
+      
+      var hiddenField = $link.prev('input[type=hidden]');
+      hiddenField.val('1');
+      
+      var field = $link.closest('.fields');
+      field.hide();
+      
+      field
+        .trigger({ type: 'nested:fieldRemoved', field: field })
+        .trigger({ type: 'nested:fieldRemoved:' + assoc, field: field });
+      return false;
+    }
+  };
+
+  window.nestedFormEvents = new NestedFormEvents();
+  $(document)
+    .delegate('form a.add_nested_fields',    'click', nestedFormEvents.addFields)
+    .delegate('form a.remove_nested_fields', 'click', nestedFormEvents.removeFields);
+})(jQuery);
+
+// http://plugins.jquery.com/project/closestChild
+/*
+ * Copyright 2011, Tobias Lindig
+ *
+ * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+ *
+ */
+(function($) {
+        $.fn.closestChild = function(selector) {
+                // breadth first search for the first matched node
+                if (selector && selector != '') {
+                        var queue = [];
+                        queue.push(this);
+                        while(queue.length > 0) {
+                                var node = queue.shift();
+                                var children = node.children();
+                                for(var i = 0; i < children.length; ++i) {
+                                        var child = $(children[i]);
+                                        if (child.is(selector)) {
+                                                return child; //well, we found one
+                                        }
+                                        queue.push(child);
+                                }
+                        }
+                }
+                return $();//nothing found
+        };
+})(jQuery);
+
+</script>

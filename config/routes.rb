@@ -35,12 +35,12 @@ Rails.application.routes.draw do
       # get :new_details
       get :edit_details
       post :create_details
-      post :details_update
+      put :details_update
       post :import
 
     end
     member do
-        get :new_details
+      get :new_details
     end
 
   end

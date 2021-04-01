@@ -54,13 +54,14 @@ class CustomerPanelsController < ApplicationController
   end
 
   def new_details
-  	@cpd = @cp.customer_panel_details.new
+    @customer_panel = CustomerPanel.new
+    @customer_panel_details = @customer_panel.customer_panel_details.build
   end
 
   def create_details
-    @cp = CustomerPanel.find( params["customer_panel_detail"][:customer_id])
-    @cpd = @cp.customer_panel_details.new(customer_panel_details_params)
-      if @cpd.save
+    @cp = CustomerPanel.find( params["cp_id"])
+    @cp.update(customer_panel_params)
+      if @cp.save
         flash[:notice] = ["Customer Panel Details  created successfullly."]
         redirect_to customer_panels_path
       else
@@ -74,8 +75,7 @@ class CustomerPanelsController < ApplicationController
   end
 
   def details_update
-    binding.pry
-      @cpd = CustomerPanelDetails.find_by(id: params[:id])
+      @cpd = CustomerPanelDetail.find_by(id: params[:customer_panel_detail][:cp_id])
       # @category =  @cpd.category
       if @cpd.update(customer_panel_details_params)
         flash[:notice] = ["Customer Panel Details updated successfullly."]
@@ -92,9 +92,8 @@ class CustomerPanelsController < ApplicationController
   end
 
   def customer_panel_params
-    params.require(:customer_panel).permit(:name, :email, :container_loading_name)
+    params.require(:customer_panel).permit(:name, :email, :container_loading_name, customer_panel_details_attributes: [:id, :grade, :surface, :profit, :customer_panel_id, :_destroy])
   end
-
 
   def customer_panel_details_params
     params.require(:customer_panel_detail).permit(:grade, :surface, :profit)
