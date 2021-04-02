@@ -1,42 +1,43 @@
 <section class="custom-wrap">
   <div class="container">
-    <div class="Dashboard-section">
-      <h4>Customer Details</h4>
-        <%= nested_form_for @customer_panel, url: create_details_customer_panels_path do |f| %>
-          <%= hidden_field_tag :cp_id, @cp.id %>
-          <table id="customer_panel_details">
-          <thead>
-            <th>Grade</th>
-            <th>Surface</th>
-            <th>Profit</th>
-          </thead>
-          <%= f.fields_for :customer_panel_details, :wrapper => false do |task_form| %>
-            <tr class="fields">
-              <td><%= task_form.text_field :grade, class: "cpd-input" %></td>
-              <td><%= task_form.text_field :surface, class: "cpd-input" %></td>
-              <td><%= task_form.text_field :profit, class: "cpd-input" %></td>
-              <td><%= task_form.link_to_remove do %><i class="fa fa-minus-square-o fa_minus" aria-hidden="true" style="font-size: 1.78em; color: black; margin-bottom: 10px"></i><% end %></td>
-            </tr>
-          <% end %>
-          </table>
-          <p><%= f.link_to_add :customer_panel_details, :data => { :target => "#customer_panel_details" } do %>
-            <i class="fa fa-plus-square-o fa_plus" aria-hidden="true" style="font-size: 1.78em; color: black; margin-left: 595px;"></i>
-          <% end %>
-          </p>
-          <div class="col-md-10" style="text-align: center;">
-            <%= f.submit "ADD", class: "btn btn-success cpd-button" %>
-            <%= button_to "CANCEL", customer_panels_path, class: "btn btn-success cpd-button" %>
-          </div>
-
-        <% end %>
+    <div class = "container-fluid">
+      <div class="Dashboard-section">
+        <h4>Customer Name</h4>
+          <%= nested_form_for @customer_panel, url: create_details_customer_panels_path do |f| %>
+            <%= hidden_field_tag :cp_id, @cp.id %>
+            <table id="customer_panel_details">
+            <thead>
+              <th>Grade</th>
+              <th>Surface</th>
+              <th>Profit%</th>
+            </thead>
+            <%= f.fields_for :customer_panel_details, :wrapper => false do |cpd| %>
+              <tr class="fields">
+                <td><%= cpd.text_field :grade, class: "cpd-input required" %></td>
+                <td><%= cpd.text_field :surface, class: "cpd-input required" %></td>
+                <td><%= cpd.text_field :profit, class: "cpd-input required" %></td>
+                <td><%= cpd.link_to_remove do %><i class="fa fa-minus-square-o fa_minus" aria-hidden="true" style="font-size: 1.78em; color: black; margin-bottom: 10px"></i><% end %></td>
+              </tr>
+            <% end %>
+            </table>
+            <p><%= f.link_to_add :customer_panel_details, :data => { :target => "#customer_panel_details" } do %>
+              <i class="fa fa-plus-square-o fa_plus" aria-hidden="true" style="font-size: 1.78em; color: black; margin-left: 595px;"></i>
+            <% end %>
+            </p>
+        </div>
       </div>
+      <div class="col-md-10" style="margin-left: 320px; margin-top: 50px;">
+        <%= f.submit "ADD", class: "btn btn-success cpd-button" %>
+        <%= link_to "CANCEL", customer_panel_path(@cp.id), class: "btn btn-success cpd-button" %>
+      </div>
+
+    <% end %>
     </div>
   </section>
 <style type="text/css">
     section.custom-wrap {
     width: 800px;
     height: auto;
-    border: 2px solid #797c80;
     display: flex;
     flex-wrap: wrap;
     margin-left: 20px;
@@ -55,7 +56,28 @@
       display:block;
       border:1px solid #797c80;
     }
+    .container-fluid{
+      background-color: #ecf0f5;
+      border: 2px solid #797c80;
+      margin-top: 50px;  
+      margin-left: 140px;   
+    }
+
 </style>
+<script type="text/javascript">
+  $('#new_customer_panel').validate({
+    rules:{
+      "customer_panel[customer_panel_details_attributes][0][grade]": {required: true},
+      "customer_panel[customer_panel_details_attributes][0][surface]": {required: true},
+      "customer_panel[customer_panel_details_attributes][0][profit]": {required: true}
+    },
+    messages: {
+      "customer_panel[customer_panel_details_attributes][0][grade]": {required: "*Please Enter Grade!"},
+      "customer_panel[customer_panel_details_attributes][0][surface]": {required: "*Please Enter Surface!"},
+      "customer_panel[customer_panel_details_attributes][0][profit]": {required: "*Please Enter Profit!"}
+    },    
+  });
+</script>
 <script>
   (function($) {
   window.NestedFormEvents = function() {
