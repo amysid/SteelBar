@@ -1,7 +1,8 @@
 class CustomerPanelsController < ApplicationController
   layout 'admin_lte_2'
   before_action :find_customer, only: [:edit, :update, :destroy, :new_details, :details_update]
-  
+  skip_before_action :verify_authenticity_token, only: [:create_details]
+
   def new
   	@cp = CustomerPanel.new
   end
@@ -63,7 +64,7 @@ class CustomerPanelsController < ApplicationController
     @cp.update(customer_panel_params)
       if @cp.save
         flash[:notice] = ["Customer Panel Details  created successfullly."]
-        redirect_to customer_panels_path
+        redirect_to customer_panel_path(@cp.id)
       else
         flash[:alert] = @cpd.errors.full_messages
         render :new_details
@@ -78,7 +79,7 @@ class CustomerPanelsController < ApplicationController
       @cpd = CustomerPanelDetail.find_by(id: params[:customer_panel_detail][:cp_id])
       if @cpd.update(customer_panel_details_params)
         flash[:notice] = ["Customer Panel Details updated successfullly."]
-        redirect_to customer_panels_path
+        redirect_to customer_panel_path(@cpd.customer_panel.id)
       else
         flash[:alert] = @cpd.errors.full_messages
         render :edit_sub_category

@@ -17,3 +17,4 @@
 //= require_tree ./common
 //= require_tree ./web
 //= require dataTables/jquery.dataTables
+//= require jquery.validate
