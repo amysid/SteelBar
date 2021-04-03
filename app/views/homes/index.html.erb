@@ -33,8 +33,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <!-- <h3>53<sup style="font-size: 20px">%</sup></h3> -->
-              <h3>154</h3>
+              <h3><%= Enquiry.where(unit_price: nil, usd_price: nil).count %></h3>
 
               <p>Pending Enquiries</p>
             </div>
@@ -49,7 +48,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>5454</h3>
+              <h3><%=CustomerPanel.all.count%></h3>
 
               <p>Total Customers</p>
             </div>
@@ -64,12 +63,12 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>5454</h3>
+              <h3><%=Supplier.all.count%></h3>
 
               <p>Total Suppliers</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="ion ion-person-add"></i>
             </div>
             <!-- <a href="<%#= admin_areas_path %>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
           </div>
