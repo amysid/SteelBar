@@ -2,9 +2,25 @@
   <div class="container">
     <div class="Dashboard-section">
       <h4>Create Length Edge</h4>
-      <%= form_with model: @le do |f| %>
+      <%= form_with model: @le, id: "length-edge-form" do |f| %>
         <%= render "form", f: f %>
       <% end %>
     </div>
   </div>
 </section>
+<script type="text/javascript">
+  $('#length-edge-form').validate({
+    rules:{
+      "length_edge[source]": {required: true},
+      "length_edge[grade]": {required: true},
+      "length_edge[length_cost_add]": {required: true},
+      "length_edge[edge_cost_add]": {required: true}
+    },
+    messages: {
+      "length_edge[source]": {required: "*Please Enter Source!"},
+      "length_edge[grade]": {required: "*Please Enter Grade!"},
+      "length_edge[length_cost_add]": {required: "*Please Enter Length Cost!"},
+      "length_edge[edge_cost_add]": {required: "*Please Enter Edge Cost!"}
+    },    
+  });
+</script>

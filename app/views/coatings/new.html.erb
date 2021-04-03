@@ -2,9 +2,25 @@
   <div class="container">
     <div class="Dashboard-section">
       <h4>Create Coating</h4>
-      <%= form_with model: @coating do |f| %>
+      <%= form_with model: @coating , id: "coating-form" do |f| %>
         <%= render "form", f: f %>
       <% end %>
     </div>
   </div>
 </section>
+<script type="text/javascript">
+  $('#coating-form').validate({
+    rules:{
+      "coating[coating_type]": {required: true},
+      "coating[coating]": {required: true},
+      "coating[cost_per_sqm]": {required: true},
+      "coating[reading]": {required: true}
+    },
+    messages: {
+      "coating[coating_type]": {required: "*Please Enter Coating Type!"},
+      "coating[coating]": {required: "*Please Enter Coating!"},
+      "coating[cost_per_sqm]": {required: "*Please Enter Cost Per Square Meter!"},
+      "coating[reading]": {required: "*Please Enter Reading!"}
+    },    
+  });
+</script>

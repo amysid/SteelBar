@@ -2,9 +2,21 @@
   <div class="container">
     <div class="Dashboard-section">
       <h4>Create Pod</h4>
-      <%= form_with model: @pod do |f| %>
+      <%= form_with model: @pod, id: "pod-form" do |f| %>
         <%= render "form", f: f %>
       <% end %>
     </div>
   </div>
 </section>
+<script type="text/javascript">
+  $('#pod-form').validate({
+    rules:{
+      "pod[export_pod]": {required: true},
+      "pod[container_cost_add]": {required: true}
+    },
+    messages: {
+      "pod[export_pod]": {required: "*Please Enter Export Port!"},
+      "pod[container_cost_add]": {required: "*Please Enter Freight/20” Container Cost Add!"}
+    },    
+  });
+</script>

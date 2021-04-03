@@ -3,9 +3,25 @@
     <div class="Dashboard-section">
       <h4>Create Staff</h4>
       <%#= form_with scope: @staff, url: staff_path, id: "new_staff", local: true do |f|%>
-      <%= form_with model: @staff do |f| %>
+      <%= form_with model: @staff, id: "staff-management" do |f| %>
         <%= render "form", f: f %>
       <% end %>
     </div>
   </div>
 </section>
+<script>
+  $('#staff-management').validate({
+    rules:{
+      "staff[name]": {required: true},
+      "staff[email]": {required: true},
+      "staff[password]": {required: true},
+      "staff[password_confirmation]": {required: true}
+    },
+    messages: {
+      "staff[name]": {required: "*Please Enter Name!"},
+      "staff[email]": {required: "*Please Enter Email!"},
+      "staff[password]": {required: "*Please Enter Password!"},
+      "staff[password_confirmation]": {required: "*Please Re-Enter the Password!"}
+    },    
+  });
+</script>

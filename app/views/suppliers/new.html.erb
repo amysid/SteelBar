@@ -3,7 +3,7 @@
     <div class="Dashboard-section">
       <h4>Add New Supplier</h4>
       <%#= form_with scope: @staff, url: staff_path, id: "new_staff", local: true do |f|%>
-      <%= form_with model: @supplier do |f| %>
+      <%= form_with model: @supplier, id: "new-supplier" do |f| %>
         <%#= render "form", f: f %>
         <div class="row">
 		    <div class="col-md-10">
@@ -22,3 +22,13 @@
     </div>
   </div>
 </section>
+<script>
+	$('#new-supplier').validate({
+    rules:{
+      "supplier[name]": {required: true}
+    },
+    messages: {
+      "supplier[name]": {required: "*Please Enter Name of the Supplier!"}
+    },    
+  });
+</script>

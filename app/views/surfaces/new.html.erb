@@ -2,9 +2,25 @@
   <div class="container">
     <div class="Dashboard-section">
       <h4>Create Surface</h4>
-      <%= form_with model: @surface do |f| %>
+      <%= form_with model: @surface, id: "new-surface" do |f| %>
         <%= render "form", f: f %>
       <% end %>
     </div>
   </div>
 </section>
+<script>
+    $('#new-surface').validate({
+    rules:{
+      "surface[grade]": {required: true},
+      "surface[surface]": {required: true},
+      "surface[cost]": {required: true},
+      "surface[unit]": {required: true}
+    },
+    messages: {
+      "surface[grade]": {required: "*Please Enter Grade!"},
+      "surface[surface]": {required: "*Please Enter Surface !"},
+      "surface[cost]": {required: "*Please Enter Cost!"},
+      "surface[unit]": {required: "*Please Enter Unit!"}
+    },    
+  });
+</script>

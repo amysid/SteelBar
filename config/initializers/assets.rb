@@ -13,4 +13,4 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 Rails.application.config.assets.precompile += %w( ckeditor/*)
-Rails.application.config.assets.precompile += %w( admin/admin_application.js admin/admin_application.scss )
+Rails.application.config.assets.precompile += %w( admin/admin_application.js customer_panel.js admin/admin_application.scss )

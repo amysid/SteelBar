@@ -18,50 +18,50 @@
 </section>
 <section class="content">
   <div id="country-content">
-      <%#= render partial: "index"%>
-      <div class="clearfix">
-      <div class="table-responsive cus-table">
-         <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th> Sr No.</th>
-                <th> Grade</th>
-                <th> Surface</th>
-                <th> Profit</th>
-                <th colspan="3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-               <% if @cpd.blank? %>
-                    <div class="global-heading user-head">No Record Found. </div>
-                 <% else %>
-            <% @cpd.each do |m| %>
-              <tr>
-                <td><%= @s_no += 1 %></td>
-                <td><%= m.try(:grade)%></td>
-                <td><%= m.try(:surface)%></td>
-                <td><%= m.try(:profit)%></td>
+    <%#= render partial: "index"%>
+    <div class="clearfix">
+    <div class="table-responsive cus-table">
+       <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th> Sr No.</th>
+              <th> Grade</th>
+              <th> Surface</th>
+              <th> Profit</th>
+              <th colspan="3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+             <% if @cpd.blank? %>
+                  <div class="global-heading user-head">No Record Found. </div>
+               <% else %>
+          <% @cpd.each do |m| %>
+            <tr>
+              <td><%= @s_no += 1 %></td>
+              <td><%= m.try(:grade)%></td>
+              <td><%= m.try(:surface)%></td>
+              <td><%= m.try(:profit)%></td>
 
 
-                <td>
+              <td>
 
-                  <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_details_customer_panels_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
-                  <%# if m.status == true %>
-                    <%#= link_to '<em class="fa fa-unlock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn btn-sm btn-primary " ,title: 'Unblock', data: { confirm: "Are you sure you want to unblock this staff?" } %>
-                  <%# else %>
-                    <%#= link_to '<em class="fa fa-lock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn btn-sm btn-danger " ,title: 'Block', data: { confirm: "Are you sure you want to block this staff?" } %>
-                  <%# end %>
-                </td>
-              </tr>
-            <% end %>
-            <%end%>
-            </tbody>
-          </table>
-          
-           <%#= will_paginate @categories,  renderer: BootstrapPagination::Rails %>
-            <%#= will_paginate @categories %>
-      </div>
-      </div>
+                <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_details_customer_panels_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                <%# if m.status == true %>
+                  <%#= link_to '<em class="fa fa-unlock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn btn-sm btn-primary " ,title: 'Unblock', data: { confirm: "Are you sure you want to unblock this staff?" } %>
+                <%# else %>
+                  <%#= link_to '<em class="fa fa-lock" aria-hidden="true"></em>'.html_safe,change_status_staff_path(m),method: :get, class:"btn btn-sm btn-danger " ,title: 'Block', data: { confirm: "Are you sure you want to block this staff?" } %>
+                <%# end %>
+              </td>
+            </tr>
+          <% end %>
+          <%end%>
+          </tbody>
+        </table>
+        
+         <%#= will_paginate @categories,  renderer: BootstrapPagination::Rails %>
+          <%#= will_paginate @categories %>
+    </div>
+    </div>
   </div>
   <div class="aduser-btn"><a href="/customer_panels/<%=@cp.id%>/new_details" class="btn btn-add" title="Add Staff"><i class="fa fa-plus"></i> Add New Details</a>
   </div>
