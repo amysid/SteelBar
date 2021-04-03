@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="col-md-10" style="margin-left: 320px; margin-top: 50px;">
-        <%= f.submit "ADD", class: "btn btn-success cpd-button" %>
+        <button type="button" class="btn btn-success cpd-button" id="submit_cpd_form">ADD</button>
         <%= link_to "CANCEL", customer_panel_path(@cp.id), class: "btn btn-success cpd-button" %>
       </div>
 
@@ -77,5 +77,10 @@
       "customer_panel[customer_panel_details_attributes][0][surface]": {required: "*Please Enter Surface!"},
       "customer_panel[customer_panel_details_attributes][0][profit]": {required: "*Please Enter Profit!"}
     },    
+  });
+  $(document).ready(function(){
+    $( "#submit_cpd_form" ).on("click", function() {
+      $('#new_customer_panel').submit();
+    })
   });
 </script>
