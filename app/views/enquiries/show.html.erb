@@ -1,0 +1,139 @@
+<section class="content">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <!-- <div class="col-md-6"> -->
+        <div class="col-md-8">
+            <div class="box">
+                <center>
+                    <h1>
+                        Ammad
+                    </h1>
+                </center>
+                <div class="box-body box-profile">
+                    <ul class="list-group list-group-unbordered">
+                    	
+                        <li class="list-group-item" dir="rtl">
+                            <b>Customer Name</b>
+                            <p class="pull-right" dir="rtl">
+                                <%=raw @enquiry&.name%>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Source</b>
+                            <p class="pull-right">
+                                <%=raw @enquiry&.source%>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Grade</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.grade %>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Classification</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.classification %>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Surface</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.surface %>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Thickness(mm)</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.thick %>
+
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Width(mm)</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.width %>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Edge</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.edge %>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Length</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.length %>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Package Wt</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.package_wt %>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Coating</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.coating %>
+
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Coating Type</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.coating_type%>
+
+                            </p>
+                        </li><li class="list-group-item">
+                            <b>Quantity MT</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.quantity_mt %>
+
+                            </p>
+                        </li><li class="list-group-item">
+                            <b>Custom Premium</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.custom_premium %>
+
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Port</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.port%>
+
+                            </p>
+
+                        </li>
+                        <%unless User.pluck(:email).exclude?(current_user.email) %>
+                        <li class="list-group-item">
+                            <b>Unit Price(RMB)</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.unit_price%>
+
+                            </p>
+                       
+                         </li>
+                         <%end%>
+                         <li class="list-group-item">
+                            <b>USD Price</b>
+                            <p class="pull-right">
+                                <%= @enquiry&.usd_price %>
+
+                            </p>
+                        </li>
+                    </ul>
+                  
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+</section>
+
+

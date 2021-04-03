@@ -26,7 +26,8 @@ class EnquiriesController < ApplicationController
   def new
   end
 
-  def create
+  def show
+    @enquiry = Enquiry.find(params["id"])
   end
 
   
