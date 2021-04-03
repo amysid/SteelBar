@@ -21,7 +21,23 @@ class PriceListsController < ApplicationController
     @supplier = Supplier.find(params[:supplier_id])
     @pl = @supplier.price_lists.new
   end
-
+  
+  def edit
+    @pl = PriceList.find(params["id"])
+    @supplier = Supplier.find(@pl.id)
+  end
+  
+  def update
+    @pl = PriceList.find(params["id"])
+      if @pl.update(pl_params)
+        flash[:notice] = ["Updated Successfullly."]
+        redirect_to suppliers_path
+      else
+        flash[:alert] = @pl.errors.full_messages
+        render :edit_sub_category
+      end
+  end
+  
   def create
     @supplier = Supplier.find(params["supplier"]["id"])
     @pl = @supplier.price_lists.new(pl_params)
@@ -33,6 +49,17 @@ class PriceListsController < ApplicationController
       render :new
     end
 
+  end
+
+  def destroy
+    @pl = PriceList.find(params["id"])
+    if @pl.destroy!
+      flash[:notice] = ["Deleted Successfully."]
+      redirect_to  suppliers_path
+    else
+      flash[:alert] = @surface.errors.full_messages
+      redirect_to  suppliers_path
+    end
   end
 
   private

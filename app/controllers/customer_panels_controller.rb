@@ -77,7 +77,6 @@ class CustomerPanelsController < ApplicationController
 
   def details_update
       @cpd = CustomerPanelDetail.find_by(id: params[:customer_panel_detail][:cp_id])
-      # @category =  @cpd.category
       if @cpd.update(customer_panel_details_params)
         flash[:notice] = ["Customer Panel Details updated successfullly."]
         redirect_to customer_panel_path(@cpd.customer_panel.id)

@@ -12,9 +12,9 @@ class EnquiriesController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.csv { send_data @enquiries.to_csv }
+      format.csv { send_data @search.to_csv }
     end
-    @enquiries = @enquiries#.decorate
+    @enquiries = @search#.decorate
   end
   
 
