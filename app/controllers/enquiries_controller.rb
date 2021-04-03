@@ -14,7 +14,7 @@ class EnquiriesController < ApplicationController
       format.html
       format.csv { send_data @search.to_csv }
     end
-    @enquiries = @search#.decorate
+    @enquiries = @search
   end
   
 
