@@ -24,7 +24,7 @@ class PriceListsController < ApplicationController
   
   def edit
     @pl = PriceList.find(params["id"])
-    @supplier = Supplier.find(@pl.id)
+    @supplier = Supplier.find(@pl.supplier_id)
   end
   
   def update
