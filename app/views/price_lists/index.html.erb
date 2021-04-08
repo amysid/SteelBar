@@ -7,8 +7,9 @@
         <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
       </div>
     <%end%>
+    <%#= link_to "Download Sample CSV", price_lists_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
     <%=link_to 'Add New Details', {:controller => "price_lists", :action => "new", :supplier_id => @supplier.id }, class: "btn btn-primary"%>
-
+    
     <!-- <a href="#" class="btn-custom">First</a> -->
   </div>
 </div>

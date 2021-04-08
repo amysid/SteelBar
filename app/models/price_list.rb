@@ -3,7 +3,7 @@ class PriceList < ApplicationRecord
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
       @supplier = Supplier.find_by(name: row[0])
-      @pl = @supplier.price_lists.new(grade: row["grade"], surface: row["surface"], min_thickness_in_mm: row["min_thickness_in_mm"],  width: row["width"], package: row["package"], base_price: row["base_price"], additional_cost: row["additional_cost"], price: ["price"] )
+      @pl = @supplier.price_lists.new(grade: row["Grade"], surface: row["Surface"], min_thickness_in_mm: row["MIN (Thickness in  mm)"], max_thickness_in_mm: row["MAX (Thickness in  mm)"], width: row["Width(mm)"], package: row["Package Wt"], base_price: row["Base Price  (RMB)"], additional_cost: row["Additional Cost(RMB)"], price: ["Price(RMB)"] )
      @pl.save!
     # PriceList.create! row.to_hash
     end
@@ -22,7 +22,7 @@ class PriceList < ApplicationRecord
 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
-      cols = ["grade", "surface", "min_thickness_in_mm", "max_thickness_in_mm", "width", "package", "base_price", "additional_cost", "price"]
+      cols = ["Grade", "Surface", "MIN (Thickness in  mm)", "MAX (Thickness in  mm)", "Width(mm)", "Package Wt", "Base Price  (RMB)", "Additional Cost(RMB)", "Price(RMB)"]
      csv << cols
     end
   end
