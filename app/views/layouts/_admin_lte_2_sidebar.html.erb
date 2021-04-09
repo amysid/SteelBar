@@ -51,3 +51,12 @@
   </section>
   <!-- /.sidebar -->
 </aside>
+
+<script type="text/javascript">
+  $(".nav>li").each(function() {
+    var navItem = $(this);
+    if (navItem.find("a").attr("href") == location.pathname) {
+      navItem.addClass("active");
+    }
+});
+</script>
