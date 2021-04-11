@@ -70,11 +70,11 @@
                     <td><%= m&.price %></td>
 
                     <td>
-                    <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_price_list_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
-                                      
-                    <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  price_list_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
-                    
-                
+                    <div class = "action buttons ">
+                      <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_price_list_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                                        
+                      <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  price_list_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
+                    </div>
                   </td>
                 </tr>
                 <%end%>
