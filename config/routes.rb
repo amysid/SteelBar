@@ -82,6 +82,7 @@ Rails.application.routes.draw do
   resources :enquiries do
     collection do
      post :import
+     get :calculate
     end
   end
   resources :homes do

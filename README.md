@@ -29,3 +29,19 @@ Admin Panel wireframes - https://3vspzz.axshare.com/#id=b938ni&p=dashboard&g=1
 
 Staff Panel New version- https://8emy9o.axshare.com
 
+# price list index
+def index
+  	@s_no = 0
+    if params["search"].present?
+      grade = PriceList.find(params["search"]["grade"]).grade
+      @supplier = Supplier.find(PriceList.find(params["search"]["grade"]).supplier_id)
+      @pl = PriceList.where(grade: grade, supplier_id: @supplier.id)
+    else
+      @supplier = Supplier.find(params[:format])
+  	  @pl = @supplier.price_lists
+  	end
+  	# respond_to do |format|
+   #    format.html
+   #    format.csv { send_data @pl.to_csv }
+   #  end
+  end

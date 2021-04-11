@@ -95,7 +95,7 @@
                   <th> Surface</th>
                   <th> Thickness(mm)</th>
                   <th> Width(mm)</th>
-                  <!-- <th> Edge</th>
+                  <th> Edge</th>
                   <th> Length</th>
                   <th> Package Wt</th>
                   <th> Coating</th>
@@ -103,11 +103,11 @@
                   <th> Quantity MT</th>
                   <th> Custom Premium</th>
                   <th> Port</th>
-                  <%# unless User.pluck(:email).exclude?(current_user.email) %>
+                  <% unless User.pluck(:email).exclude?(current_user.email) %>
                   <th> Unit Price(RMB)</th>
-                  <%#end%>
-                  <th> USD Price</th> -->
-                  <th colspan="3">Actions</th>
+                  <%end%>
+                  <th> USD Price</th>
+                  <!-- <th colspan="3">Actions</th> -->
 
 
                 </tr>
@@ -125,21 +125,21 @@
                     <td><%= user&.surface %></td>
                     <td><%= user&.thick %></td>
                     <td><%= user&.width %></td>
-                    <!-- <td><%#= user&.edge %></td>
-                    <td><%#= user&.length %></td>
-                    <td><%#= user&.package_wt %></td>
-                    <td><%#= user&.coating %></td>
-                    <td><%#= user&.coating_type %></td>
-                    <td><%#= user&.quantity_mt %></td>
-                    <td><%#= user&.custom_premium %></td>
-                    <td><%#= user&.port %></td>
-                  <%# unless User.pluck(:email).exclude?(current_user.email) %>
-                    <td><%#= user&.unit_price %></td>
-                  <%#end%>
-                    <td><%#= user&.usd_price %></td> -->
-                    <td>
-                    <%= link_to '<em class="fa fa-eye" aria-hidden="true"></em>'.html_safe, enquiry_path(user),:class=>"btn btn-success", method: :get, title: "View" %>
-                    </td>
+                    <td><%= user&.edge %></td>
+                    <td><%= user&.length %></td>
+                    <td><%= user&.package_wt %></td>
+                    <td><%= user&.coating %></td>
+                    <td><%= user&.coating_type %></td>
+                    <td><%= user&.quantity_mt %></td>
+                    <td><%= user&.custom_premium %></td>
+                    <td><%= user&.port %></td>
+                  <% unless User.pluck(:email).exclude?(current_user.email) %>
+                    <td><%= user&.unit_price %></td>
+                  <%end%>
+                    <td><%= user&.usd_price %></td>
+                   <!--  <td>
+                    <%#= link_to '<em class="fa fa-eye" aria-hidden="true"></em>'.html_safe, enquiry_path(user),:class=>"btn btn-success", method: :get, title: "View" %>
+                    </td> -->
                 </tr>
                 <%end%>
                 <%end%>
@@ -152,6 +152,9 @@
                 <%= will_paginate @search %>
         </div>
     </div>
+    <div class = "btn btn-primary">
+       <a href="/enquiries/calculate"  title="Calculate"> Calculate</a>
+     </div>
 </div>
 <style type="text/css">
    .margin-top-25 {

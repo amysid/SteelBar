@@ -26,7 +26,7 @@
       <li><a href="<%=enquiries_path%>"><i class="fa fa-users"></i> <span>Enquiry Management</span></a></li>
       <% if User.pluck(:email).include?(current_user.email) %>
        <li class="treeview">
-          <a href="#">
+          <a href="<%=suppliers_path%>">
             <i class="fa fa-dashboard"></i> <span>Price List Management</span>
             <span class="pull-right-container">
             </span>
