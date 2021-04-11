@@ -1,5 +1,5 @@
 <div class="my-btn">
-  <h4><%= @supplier.name%> Supplier</h4>
+  <h4><%= $supplier.name%> Supplier</h4>
   <div class="two-btn">
     <%= form_tag import_price_lists_path, multipart: true do%>
       <div class="form-group">
@@ -7,8 +7,8 @@
         <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
       </div>
     <%end%>
-    <%#= link_to "Download Sample CSV", price_lists_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
-    <%=link_to 'Add New Details', {:controller => "price_lists", :action => "new", :supplier_id => @supplier.id }, class: "btn btn-primary"%>
+    <%= link_to "Download Sample CSV", pricelistsample_price_lists_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
+    <%=link_to 'Add New Details', {:controller => "price_lists", :action => "new", :supplier_id => $supplier.id }, class: "btn btn-primary"%>
     
     <!-- <a href="#" class="btn-custom">First</a> -->
   </div>
@@ -16,12 +16,13 @@
 
 
 <div class="cover-select">
-<%= form_with scope: :search, url: price_lists_path, method: :get,autocomplete: :off,local: true do |f| %>
+<%= form_with scope: :search, url: price_lists_path, method: :get,autocomplete: :off, id: 'search_price', local: true do |f| %>
   <div class="sub-seclect">
     <div class="contant-select">
       <h5>Grade</h5>
       <div>
-        <%= f.select(:grade, options_for_select(@supplier.price_lists.order(:grade).pluck(:grade, :id),(params.dig :search, :search)) , {:include_blank => "Select Grade"}, {:class => "form-control"} ) %>
+        <%= f.select(:grade, options_for_select($supplier.price_lists.order(:grade).pluck(:grade, :id),(params.dig :search, :search)) , {:include_blank => "Select Grade"}, {:class => "form-control"} ) %>
+        <%= f.hidden_field :supplier_id, value: $supplier.id %>
       </div>
     </div>
    <div class="cover-btns">
@@ -70,17 +71,26 @@
                     <td><%= m&.price %></td>
 
                     <td>
-                    <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_price_list_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
-                                      
-                    <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  price_list_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
-                    
-                
+                    <div class = "action buttons ">
+                      <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_price_list_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                                        
+                      <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  price_list_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
+                    </div>
                   </td>
                 </tr>
                 <%end%>
                 <%end%>
             </tbody>
         </table>
+        <div class="box-footer">
+        <div class="digg_pagination pull-right">
+                <%= will_paginate @pl %>
+        </div>
+    </div>
     </div>
 
-
+<script>
+$('#search_grade').click( function() {  
+  $('#search_price').submit();
+});
+</script>

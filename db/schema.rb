@@ -99,8 +99,8 @@ ActiveRecord::Schema.define(version: 2021_03_06_102215) do
   create_table "price_lists", force: :cascade do |t|
     t.integer "grade"
     t.string "surface"
-    t.integer "min_thickness_in_mm"
-    t.integer "max_thickness_in_mm"
+    t.float "min_thickness_in_mm"
+    t.float "max_thickness_in_mm"
     t.integer "width"
     t.string "package"
     t.integer "base_price"

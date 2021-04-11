@@ -3,17 +3,29 @@ class PriceListsController < ApplicationController
  
   def index
   	@s_no = 0
-  	@supplier = Supplier.find(params[:format])
-  	@pl = @supplier.price_lists
+    if params[:search].present?
+      $supplier = Supplier.find(params[:search][:supplier_id])
+      @pl = PriceList.where(id: params[:search][:grade]).order("created_at desc").paginate(:page => params[:page], :per_page => 10)
+  	else
+      $supplier = Supplier.find(params[:format])
+      @pl = $supplier.price_lists.order("created_at desc").paginate(:page => params[:page], :per_page => 10)
+    end
   	# respond_to do |format|
    #    format.html
    #    format.csv { send_data @pl.to_csv }
    #  end
   end
-
+  
+  def pricelistsample
+    @pl = PriceList.all
+   respond_to do |format|
+      format.html
+      format.csv { send_data @pl.to_csv }
+    end
+  end
 
   def import
-    PriceList.import(params[:file])
+    PriceList.import(params[:file], $supplier)
     redirect_to suppliers_path, notice: ["Data Imported"]
   end
 
