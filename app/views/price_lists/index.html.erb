@@ -16,12 +16,13 @@
 
 
 <div class="cover-select">
-<%= form_with scope: :search, url: price_lists_path, method: :get,autocomplete: :off,local: true do |f| %>
+<%= form_with scope: :search, url: price_lists_path, method: :get,autocomplete: :off, id: 'search_price', local: true do |f| %>
   <div class="sub-seclect">
     <div class="contant-select">
       <h5>Grade</h5>
       <div>
         <%= f.select(:grade, options_for_select(@supplier.price_lists.order(:grade).pluck(:grade, :id),(params.dig :search, :search)) , {:include_blank => "Select Grade"}, {:class => "form-control"} ) %>
+        <%= f.hidden_field :supplier_id, value: @supplier.id %>
       </div>
     </div>
    <div class="cover-btns">
@@ -83,4 +84,8 @@
         </table>
     </div>
 
-
+<script>
+$('#search_grade').click( function() {  
+  $('#search_price').submit();
+});
+</script>

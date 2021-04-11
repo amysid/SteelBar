@@ -3,8 +3,13 @@ class PriceListsController < ApplicationController
  
   def index
   	@s_no = 0
-  	@supplier = Supplier.find(params[:format])
-  	@pl = @supplier.price_lists
+    if params[:search].present?
+      @supplier = Supplier.find(params[:search][:supplier_id])
+      @pl = PriceList.where(id: params[:search][:grade])
+  	else
+      @supplier = Supplier.find(params[:format])
+      @pl = @supplier.price_lists
+    end
   	# respond_to do |format|
    #    format.html
    #    format.csv { send_data @pl.to_csv }
