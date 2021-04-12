@@ -1,19 +1,22 @@
 class PriceListsController < ApplicationController
   layout 'admin_lte_2'
- 
+
   def index
-  	@s_no = 0
-    if params[:search].present?
-      @supplier = Supplier.find(params[:search][:supplier_id])
-      @pl = PriceList.where(id: params[:search][:grade])
-  	else
+    @s_no = 0
+    if params["search"].present?
+      @grade = PriceList.find_by(grade: params["search"]["grade"]).grade
+      @supplier = @supplier = Supplier.find(params[:search][:supplier_id])
+      @pl = PriceList.where(grade: @grade, supplier_id: @supplier.id)
+      @price_lists = @supplier.price_lists.order(:grade).select('distinct(grade)')
+    else
       @supplier = Supplier.find(params[:format])
       @pl = @supplier.price_lists
+      @price_lists = @supplier.price_lists.order(:grade).select('distinct(grade)')
     end
-  	# respond_to do |format|
-   #    format.html
-   #    format.csv { send_data @pl.to_csv }
-   #  end
+    # respond_to do |format|
+    #    format.html
+    #    format.csv { send_data @pl.to_csv }
+    #  end
   end
 
 

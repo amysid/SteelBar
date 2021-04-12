@@ -1,3 +1,9 @@
 .action.buttons {
   display: flex;
 }
+.hidden{
+  display: none;
+}
+.grade-select{
+  width: 80px;
+}
