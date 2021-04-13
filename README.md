@@ -23,7 +23,7 @@ Things you may want to cover:
 
 * ...
 
-
+https://datatables.net/examples/api/multi_filter.html
 
 Admin Panel wireframes - https://3vspzz.axshare.com/#id=b938ni&p=dashboard&g=1
 

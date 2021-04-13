@@ -7,7 +7,9 @@
         <div class="col-md-3"><%= submit_tag "Import CSV", class: 'btn btn-primary'%></div>
       </div>
     <%end%>
+    <%#= link_to "Download Sample CSV", price_lists_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
     <%= link_to "Download Sample CSV", pricelistsample_price_lists_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
+
     <%=link_to 'Add New Details', {:controller => "price_lists", :action => "new", :supplier_id => $supplier.id }, class: "btn btn-primary"%>
     
     <!-- <a href="#" class="btn-custom">First</a> -->
@@ -21,7 +23,17 @@
     <div class="contant-select">
       <h5>Grade</h5>
       <div>
-        <%= f.select(:grade, options_for_select($supplier.price_lists.order(:grade).pluck(:grade, :id),(params.dig :search, :search)) , {:include_blank => "Select Grade"}, {:class => "form-control"} ) %>
+        <%#= f.select(:grade, options_for_select(@supplier.price_lists.order(:grade).pluck(:grade, :id),(params.dig :search, :search)) , {:include_blank => "Select Grade"}, {:class => "form-control"} ) %>
+
+        <select class = "grade-select">
+          <% if @grade.present? %>
+            <option selected="selected" class="hidden"><%= @grade %></option>
+          <% end %>
+          <% @price_lists.each do |pl| %>
+            <option class = "grade-value"><%= pl.grade %></option>
+          <% end %>
+        </select>
+        <%= f.hidden_field :grade %>
         <%= f.hidden_field :supplier_id, value: $supplier.id %>
       </div>
     </div>
@@ -31,66 +43,60 @@
 
    </div>
   </div>
-  <%end%>
+<%end%>
 </div>
 
 
- <div class="box-body table-responsive ">
-        <table class="table table-hover table-bordered">
-            <tbody>
-                <tr style="background-color: #D9D7D7;">
-                  <th>S.NO.</th>
-                  <th>Grade</th>
-                  <th>Surface</th>
-                  <th>MIN (Thickness in  mm)</th>
-                  <th>MAX (Thickness in  mm)</th>
-                  <th>Width(mm)</th>
-                  <th>Package Wt</th>
-                  <th>Base Price  (RMB)</th>
-                  <th>Additional Cost(RMB)</th>
-                  <th>Price(RMB)</th>
-                  
-                  <th colspan="3">Actions</th>
-                  
-                </tr>
-                <br/>
-                 <% if @pl.blank? %>
-                      <div class="global-heading user-head">No Record Found. </div>
-                   <% else %>
-                <% @pl&.each do |m| %>
-                <tr>
-                    <td><%= @s_no+=1 %></td>
-                    <td><%= m&.grade %></td>
-                    <td><%= m&.surface %></td>
-                    <td><%= m&.min_thickness_in_mm %></td>
-                    <td><%= m&.max_thickness_in_mm %></td>
-                    <td><%= m&.width %></td>
-                    <td><%= m&.package %></td>
-                    <td><%= m&.base_price %></td>
-                    <td><%= m&.additional_cost %></td>
-                    <td><%= m&.price %></td>
+<div class="box-body table-responsive ">
+  <table class="table table-hover table-bordered">
+    <tbody>
+      <tr style="background-color: #D9D7D7;">
+        <th>S.NO.</th>
+        <th>Grade</th>
+        <th>Surface</th>
+        <th>MIN (Thickness in  mm)</th>
+        <th>MAX (Thickness in  mm)</th>
+        <th>Width(mm)</th>
+        <th>Package Wt</th>
+        <th>Base Price  (RMB)</th>
+        <th>Additional Cost(RMB)</th>
+        <th>Price(RMB)</th>
+        
+        <th colspan="3">Actions</th>
+        
+      </tr>
+      <br/>
+        <% if @pl.blank? %>
+            <div class="global-heading user-head">No Record Found. </div>
+        <% else %>
+          <% @pl&.each do |m| %>
+          <tr>
+              <td><%= @s_no+=1 %></td>
+              <td><%= m&.grade %></td>
+              <td><%= m&.surface %></td>
+              <td><%= m&.min_thickness_in_mm %></td>
+              <td><%= m&.max_thickness_in_mm %></td>
+              <td><%= m&.width %></td>
+              <td><%= m&.package %></td>
+              <td><%= m&.base_price %></td>
+              <td><%= m&.additional_cost %></td>
+              <td><%= m&.price %></td>
 
-                    <td>
-                    <div class = "action buttons ">
-                      <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_price_list_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
-                                        
-                      <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  price_list_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
-                    </div>
-                  </td>
-                </tr>
-                <%end%>
-                <%end%>
-            </tbody>
-        </table>
-        <div class="box-footer">
-        <div class="digg_pagination pull-right">
-                <%= will_paginate @pl %>
-        </div>
-    </div>
-    </div>
-
+              <td>
+              <div class = "action buttons ">
+                <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_price_list_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                                  
+                <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  price_list_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
+              </div>
+            </td>
+          </tr>
+          <%end%>
+        <%end%>
+    </tbody>
+  </table>
+</div>
 <script>
-$('#search_grade').click( function() {  
-  $('#search_price').submit();
-});
+  $('.grade-select').on('change', function() {
+    $('#search_grade').val(this.value)
+  });
 </script>
