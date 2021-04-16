@@ -25,18 +25,21 @@
       <%end%>
       <li><a href="<%=enquiries_path%>"><i class="fa fa-users"></i> <span>Enquiry Management</span></a></li>
       <% if User.pluck(:email).include?(current_user.email) %>
-       <li class="treeview">
-          <a href="#">
+       <li class="treeview price-list-tree">
+          <a href="/suppliers">
             <i class="fa fa-dashboard"></i> <span>Price List Management</span>
+          </a>
+          <a href="#">
+            <span class = "arrow-down"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
             <span class="pull-right-container">
             </span>
           </a>
-          <% Supplier.all&.each do |m| %>
-          <ul class="treeview-menu" style="">
-            <li id="groups" class="active"><a href="<%=price_lists_path(m)%>" ><i class='fa fa-users'></i> <span><%=m.name%></span></a></li>
-          </ul>
-          <%end%>
-        </li>
+            <% Supplier.all&.each do |m| %>
+            <ul class="treeview-menu" style="">
+              <li id="groups" class="active"><a href="<%=price_lists_path(m)%>" ><i class='fa fa-users'></i> <span><%=m.name%></span></a></li>
+            </ul>
+            <%end%>
+          </li>
       <!-- <li><a href="<%#=suppliers_path%>"><i class="fa fa-users"></i> <span>Price List Management</span></a></li> -->
       <li><a href="<%=customer_panels_path%>"><i class="fa fa-users"></i> <span>Customer Panel Management</span></a></li>
       <%a = GeneralPanel&.first&.id%>
@@ -58,5 +61,5 @@
     if (navItem.find("a").attr("href") == location.pathname) {
       navItem.addClass("active");
     }
-});
+  });
 </script>
