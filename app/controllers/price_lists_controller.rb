@@ -70,7 +70,7 @@ class PriceListsController < ApplicationController
     @pl = @supplier.price_lists.new(pl_params)
     if @pl.save!
       flash[:notice] = ["Created Successfully."]
-      redirect_to suppliers_path
+      redirect_to price_lists_path(@supplier.id)
     else
       flash[:alert] = @pl.errors.full_messages
       render :new

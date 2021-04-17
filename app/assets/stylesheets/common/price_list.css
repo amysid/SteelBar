@@ -7,3 +7,9 @@
 .grade-select{
   width: 80px;
 }
+/*span.arrow-down {
+  margin-left: 10px;
+}*/
+li.treeview.price-list-tree {
+   display: flex;
+}

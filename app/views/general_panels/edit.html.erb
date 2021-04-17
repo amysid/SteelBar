@@ -4,7 +4,6 @@
       <h4>Panel Details</h4>
       <%= form_with scope: @gp, url: general_panel_path, method: :put, id: "new_gp", local: true do |f|%>
         <div class="row">
-    <div class="col-md-10">
         <div class="form-group">
             <label for="exampleInputEmail1">Tax Ref(%)</label>
             <%= f.text_field :tax_ref,class: "form-control"  %>
