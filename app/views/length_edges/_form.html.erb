@@ -6,15 +6,18 @@
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Grade</label>
-            <%= f.text_field :grade,class: "form-control" , placeholder: "Enter Grade" %>
+            <%= f.text_field :grade,class: "form-control length-edge" , placeholder: "Enter Grade" %>
+            <span class="lblErrorgrade" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Length Cost Add</label>
-            <%= f.text_field :length_cost_add,class: "form-control" , placeholder: "Enter Length Cost Add" %>
+            <%= f.text_field :length_cost_add,class: "form-control length-edge" , placeholder: "Enter Length Cost Add" %>
+            <span class="lblErrorlength" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Edge Cost Add</label>
-            <%= f.text_field :edge_cost_add,class: "form-control" , placeholder: "Edge Cost Add" %>
+            <%= f.text_field :edge_cost_add,class: "form-control length-edge" , placeholder: "Edge Cost Add" %>
+            <span class="lblErroredge" style="color: red"></span>
         </div>
     </div>
     <div class="col-md-10" style="margin-left: 15px;">
@@ -22,3 +25,32 @@
         <%= link_to "Cancel", length_edges_path,class: "btn btn-danger" %>
     </div>
 </div>
+<script type="text/javascript">
+  $(function () {
+    $(".length-edge").keypress(function (e) {
+      var keyCode = e.keyCode || e.which;
+      if (this.name == "length_edge[grade]"){
+        $(".lblErrorgrade").html("");
+      }else if(this.name == "length_edge[length_cost_add]"){
+        $(".lblErrorlength").html("");
+      }else{
+        $(".lblErroredge").html("");
+      }
+      //Regex for Valid Characters i.e. Numbers.
+      var regex = /^[0-9]+$/;
+      //Validate TextBox value against the Regex.
+      var isValid = regex.test(String.fromCharCode(keyCode));
+      if (!isValid) {
+        if (this.name == "length_edge[grade]"){
+          $(".lblErrorgrade").html("Only Numbers allowed.");
+        }else if(this.name == "length_edge[length_cost_add]"){
+          $(".lblErrorlength").html("Only Numbers allowed.");
+        }else{
+          $(".lblErroredge").html("Only Numbers allowed.");
+        }
+
+      }
+      return isValid;
+    });
+  });
+</script>
