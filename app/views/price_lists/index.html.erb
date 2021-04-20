@@ -1,5 +1,5 @@
 <div class="my-btn">
-  <h4><%= @supplier.name%> Supplier</h4>
+  <h4><%= $supplier.name%> Supplier</h4>
   <div class="two-btn">
     <%= form_tag import_price_lists_path, multipart: true do%>
       <div class="form-group">
@@ -8,7 +8,9 @@
       </div>
     <%end%>
     <%#= link_to "Download Sample CSV", price_lists_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
-    <%=link_to 'Add New Details', {:controller => "price_lists", :action => "new", :supplier_id => @supplier.id }, class: "btn btn-primary"%>
+    <%= link_to "Download Sample CSV", pricelistsample_price_lists_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
+
+    <%=link_to 'Add New Details', {:controller => "price_lists", :action => "new", :supplier_id => $supplier.id }, class: "btn btn-primary"%>
     
     <!-- <a href="#" class="btn-custom">First</a> -->
   </div>
@@ -32,7 +34,7 @@
           <% end %>
         </select>
         <%= f.hidden_field :grade %>
-        <%= f.hidden_field :supplier_id, value: @supplier.id %>
+        <%= f.hidden_field :supplier_id, value: $supplier.id %>
       </div>
     </div>
    <div class="cover-btns">

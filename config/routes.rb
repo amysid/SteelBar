@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   resources :price_lists do
     collection do
      post :import
+     get :pricelistsample
     end
   end
   resources :suppliers
@@ -82,6 +83,7 @@ Rails.application.routes.draw do
   resources :enquiries do
     collection do
      post :import
+     get :calculate
     end
   end
   resources :homes do
