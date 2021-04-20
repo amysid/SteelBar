@@ -10,7 +10,8 @@
     </div>
     <div class="form-group">
       <label for="exampleInputEmail1">Container Loading Weight</label>
-      <%= f.text_field :container_loading_name,class: "form-control" , placeholder: "Enter Container Loading Weight" %>
+      <%= f.text_field :container_loading_name,class: "form-control container-weight" , placeholder: "Enter Container Loading Weight" %>
+      <span class="lblError-clw" style="color: red"></span>
     </div>   
   </div>
   <div class="col-md-10" style="margin-left: 15px;">
@@ -19,7 +20,7 @@
   </div>
 </div>
 <script>
-    $('#customer-panel').validate({
+  $('#customer-panel').validate({
     rules:{
       "customer_panel[name]": {required: true},
       "customer_panel[email]": {required: true},
@@ -31,4 +32,17 @@
       "customer_panel[container_loading_name]": {required: "*Please Enter Container Loading Weight!"}
     },    
   });
+  $(function () {
+    $(".container-weight").keypress(function (e) {
+      var keyCode = e.keyCode || e.which;
+        $(".lblError-clw").html("");
+      var regex = /^[0-9]+$/;
+      var isValid = regex.test(String.fromCharCode(keyCode));
+      if (!isValid) {
+        $(".lblError-clw").html("Only Numbers allowed.");
+      }
+      return isValid;
+    });
+  });
+
 </script>

@@ -10,11 +10,13 @@
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Cost per sqm</label>
-            <%= f.text_field :cost_per_sqm,class: "form-control" , placeholder: "Enter Cost per sqm" %>
+            <%= f.text_field :cost_per_sqm,class: "form-control coating" , placeholder: "Enter Cost per sqm" %>
+            <span class="lblErrorcost" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Reading</label>
-            <%= f.text_field :reading,class: "form-control" , placeholder: "Enter Reading" %>
+            <%= f.text_field :reading,class: "form-control coating" , placeholder: "Enter Reading" %>
+            <span class="lblErrorreading" style="color: red"></span>
         </div>
     </div>
     <div class="col-md-10" style="margin-left: 15px;">
@@ -22,3 +24,28 @@
         <%= link_to "Cancel", coatings_path,class: "btn btn-danger" %>
     </div>
 </div>
+<script>
+  $(function () {
+    $(".coating").keypress(function (e) {
+      var keyCode = e.keyCode || e.which;
+      if (this.name == "coating[cost_per_sqm]"){
+        $(".lblErrorcost").html("");
+      }else{
+        $(".lblErrorreading").html("");
+      }
+      //Regex for Valid Characters i.e. Numbers.
+      var regex = /^[0-9]+$/;
+      //Validate TextBox value against the Regex.
+      var isValid = regex.test(String.fromCharCode(keyCode));
+      if (!isValid) {
+        if (this.name == "coating[cost_per_sqm]"){
+          $(".lblErrorcost").html("Only Numbers allowed.");
+        }else{
+          $(".lblErrorreading").html("Only Numbers allowed.");
+        }
+
+      }
+      return isValid;
+    });
+  });
+</script>

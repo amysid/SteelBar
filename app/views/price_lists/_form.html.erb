@@ -2,7 +2,8 @@
     <div class="col-md-10">
         <div class="form-group">
             <label for="exampleInputEmail1">Grade</label>
-            <%= f.text_field :grade,class: "form-control" , placeholder: "Enter Grade" %>
+            <%= f.text_field :grade,class: "form-control price-list" , placeholder: "Enter Grade" %>
+            <span class="lblError-plgrade" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Surface</label>
@@ -10,15 +11,18 @@
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">MIN Thickness(mm)</label>
-            <%= f.text_field :min_thickness_in_mm,class: "form-control" , placeholder: "Enter MIN Thickness(mm)" %>
+            <%= f.text_field :min_thickness_in_mm,class: "form-control price-list" , placeholder: "Enter MIN Thickness(mm)" %>
+            <span class="lblError-min-thick" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Max Thickness(mm)</label>
-            <%= f.text_field :max_thickness_in_mm,class: "form-control" , placeholder: "Enter Max Thickness(mm)" %>
+            <%= f.text_field :max_thickness_in_mm,class: "form-control price-list" , placeholder: "Enter Max Thickness(mm)" %>
+            <span class="lblError-max-thick" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Width(mm)</label>
-            <%= f.text_field :width,class: "form-control" , placeholder: "Enter Width(mm)" %>
+            <%= f.text_field :width,class: "form-control price-list" , placeholder: "Enter Width(mm)" %>
+            <span class="lblError-plwidth" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Package Weight(MT)</label>
@@ -26,15 +30,18 @@
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Base Price(RMB)</label>
-            <%= f.text_field :base_price,class: "form-control" , placeholder: "Enter Price(RMB)" %>
+            <%= f.text_field :base_price,class: "form-control price-list" , placeholder: "Enter Price(RMB)" %>
+            <span class="lblError-pl-bp" style="color: red"></span>
         </div>
         <!-- <div class="form-group">
             <label for="exampleInputEmail1">Additional Cost(RMB)</label>
             <%#= f.text_field :additional_cost,class: "form-control" , placeholder: "Enter Password" %>
+            <span class="lblError-pl-acost" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Total Price(RMB)</label>
             <%#= f.text_field :price,class: "form-control" , placeholder: "Enter Password" %>
+            <span class="lblError-pl-tprice" style="color: red"></span>
         </div>
          -->
     </div>
@@ -64,5 +71,39 @@
       "price_list[package]": {required: "*Please Enter Package Weight(MT)!"},
       "price_list[base_price]": {required: "*Please Enter Base Price(RMB)!"}
     },    
+  });
+  $(function () {
+    $(".price-list").keypress(function (e) {
+      var keyCode = e.keyCode || e.which;
+      if (this.name == "price_list[grade]"){
+          $(".lblError-plgrade").html("");
+        }else if(this.name == "price_list[min_thickness_in_mm]"){
+          $(".lblError-min-thick").html("");
+        }else if(this.name == "price_list[max_thickness_in_mm]"){
+          $(".lblError-max-thick").html("");
+        }else if(this.name == "price_list[width]"){
+          $(".lblError-plwidth").html("");
+        }else{
+          $(".lblError-pl-bp").html("");
+        }
+      //Regex for Valid Characters i.e. Numbers.
+      var regex = /^[0-9]+$/;
+      //Validate TextBox value against the Regex.
+      var isValid = regex.test(String.fromCharCode(keyCode));
+      if (!isValid) {
+        if (this.name == "price_list[grade]"){
+          $(".lblError-plgrade").html("Only Numbers allowed.");
+        }else if(this.name == "price_list[min_thickness_in_mm]"){
+          $(".lblError-min-thick").html("Only Numbers allowed.");
+        }else if(this.name == "price_list[max_thickness_in_mm]"){
+          $(".lblError-max-thick").html("Only Numbers allowed.");
+        }else if(this.name == "price_list[width]"){
+          $(".lblError-plwidth").html("Only Numbers allowed.");
+        }else{
+          $(".lblError-pl-bp").html("Only Numbers allowed.");
+        }
+      }
+      return isValid;
+    });
   });
 </script>

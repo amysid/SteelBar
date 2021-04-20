@@ -6,7 +6,8 @@
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Freight/20” Container Cost Add</label>
-            <%= f.text_field :container_cost_add,class: "form-control" , placeholder: "Enter Freight/20” Container Cost Add" %>
+            <%= f.text_field :container_cost_add,class: "form-control pod" , placeholder: "Enter Freight/20” Container Cost Add" %>
+            <span class="lblErrorfreight" style="color: red"></span>
         </div>
     </div>
     <div class="col-md-10" style="margin-left: 15px;">
@@ -14,3 +15,19 @@
         <%= link_to "Cancel", pods_path,class: "btn btn-danger" %>
     </div>
 </div>
+<script>
+  $(function () {
+    $(".pod").keypress(function (e) {
+      var keyCode = e.keyCode || e.which;
+        $(".lblErrorfreight").html("");
+      //Regex for Valid Characters i.e. Numbers.
+      var regex = /^[0-9]+$/;
+      //Validate TextBox value against the Regex.
+      var isValid = regex.test(String.fromCharCode(keyCode));
+      if (!isValid) {
+        $(".lblErrorfreight").html("Only Numbers allowed.");
+      }
+      return isValid;
+    });
+  });
+</script>

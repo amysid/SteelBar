@@ -2,7 +2,8 @@
     <div class="col-md-10">
         <div class="form-group">
             <label for="exampleInputEmail1">Grade</label>
-            <%= f.text_field :grade,class: "form-control" , placeholder: "Enter Grade" %>
+            <%= f.text_field :grade,class: "form-control surface" , placeholder: "Enter Grade" %>
+            <span class="lblError-s-grade" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Surface</label>
@@ -10,7 +11,8 @@
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Cost</label>
-            <%= f.text_field :cost,class: "form-control" , placeholder: "Enter Cost" %>
+            <%= f.text_field :cost,class: "form-control surface" , placeholder: "Enter Cost" %>
+            <span class="lblError-s-cost" style="color: red"></span>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Unit</label>

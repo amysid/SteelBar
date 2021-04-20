@@ -9,7 +9,7 @@
   </div>
 </section>
 <script>
-    $('#new-surface').validate({
+  $('#new-surface').validate({
     rules:{
       "surface[grade]": {required: true},
       "surface[surface]": {required: true},
@@ -22,5 +22,27 @@
       "surface[cost]": {required: "*Please Enter Cost!"},
       "surface[unit]": {required: "*Please Enter Unit!"}
     },    
+  });
+  $(function () {
+    $(".surface").keypress(function (e) {
+      var keyCode = e.keyCode || e.which;
+      if (this.name == "surface[grade]"){
+        $(".lblError-s-grade").html("");
+      }else{
+        $(".lblError-s-cost").html("");
+      }
+      //Regex for Valid Characters i.e. Numbers.
+      var regex = /^[0-9]+$/;
+      //Validate TextBox value against the Regex.
+      var isValid = regex.test(String.fromCharCode(keyCode));
+      if (!isValid) {
+        if (this.name == "surface[grade]"){
+          $(".lblError-s-grade").html("Only Numbers allowed.");
+        }else{
+          $(".lblError-s-cost").html("Only Numbers allowed.");
+        }
+      }
+      return isValid;
+    });
   });
 </script>
