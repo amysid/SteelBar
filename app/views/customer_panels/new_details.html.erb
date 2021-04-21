@@ -3,7 +3,7 @@
   <div class="container">
     <div class = "container-fluid">
       <div class="Dashboard-section">
-        <h4>Customer Name</h4>
+        <h4><%=@cp&.name.capitalize%></h4>
           <%= nested_form_for @customer_panel, url: create_details_customer_panels_path do |f| %>
             <%= hidden_field_tag :cp_id, @cp.id %>
             <table id="customer_panel_details">
