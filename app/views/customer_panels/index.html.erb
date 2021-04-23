@@ -11,70 +11,69 @@
   </div>
 </div>
 
-
-
 <div class="box box-info">
-
-      
-
-    <div class="box-body">
-        <div class="row">
-          <div class="col-md-12">
-            
-            <div class="form-group" style="text-align: right;">
-                        <%= link_to "Add Customer", new_customer_panel_path, class:"btn btn-success", title: "Add Customer"%> 
-                        
-                        <%= link_to "Download Sample CSV", customer_panels_path(format: "csv"), class:"btn btn-success", title: "Download Sample CSV"%> 
-                      
-           </div>
-        </div>
+  <div class="box-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" style="text-align: right;">
+            <%= link_to "Add Customer", new_customer_panel_path, class:"btn btn-success", title: "Add Customer"%> 
+            <%= link_to "Download Sample CSV", customer_panels_path(format: "csv"), class:"btn btn-success", title: "Download Sample CSV"%> 
+         </div>
       </div>
     </div>
+  </div>
   
-    <div class="box-body table-responsive ">
-        <table class="table table-hover table-bordered">
-            <tbody>
-                <tr style="background-color: #D9D7D7;">
-                  <th>Sr_No.</th>
-                  <th>ID</th>
-                  <th> Name</th>
-                  <th> Email</th>
-                  <th> Container Loading Weight</th>
+  <div class="box-body table-responsive ">
+    <table class="table table-hover table-bordered display" id="example" style="width:100%">
+      <thead>
+        <tr style="background-color: #D9D7D7;">
+          <th>Sr_No.</th>
+          <th>ID</th>
+          <th> Name</th>
+          <th> Email</th>
+          <th> Container Loading Weight</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Sr_No.</th>
+          <th>ID</th>
+          <th> Name</th>
+          <th> Email</th>
+          <th> Container Loading Weight</th>
+          <th>Actions</th>
+        </tr>
+      </tfoot>
+      <tbody>
+        <% if @cp.blank? %>
+          <div class="global-heading user-head">No Record Found. </div>
+        <% else %>
+          <% @cp&.each do |m| %>
+            <tr>
+              <td><%= @s_no += 1 %></td>
+              <td><%= m.try(:id)%></td>
+              <td><%= m.try(:name)%></td>
+              <td><%= m.try(:email)%></td>
+              <td><%= m.try(:container_loading_name)%></td>
+              <td>
+                <%= link_to '<em class="fa fa-eye" aria-hidden="true"></em>'.html_safe, customer_panel_path(m),:class=>"btn btn-success", method: :get, title: "View" %>
 
+                <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_customer_panel_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>                  
+              </td>
 
-                  <th colspan="3">Actions</th>
-                </tr>
-                <br/>
-                 <% if @cp.blank? %>
-                      <div class="global-heading user-head">No Record Found. </div>
-                   <% else %>
-                <% @cp&.each do |m| %>
-               <tr>
-                  <td><%= @s_no += 1 %></td>
-                  <td><%= m.try(:id)%></td>
-                  <td><%= m.try(:name)%></td>
-                  <td><%= m.try(:email)%></td>
-                  <td><%= m.try(:container_loading_name)%></td>
-
-
-                  <td>
-                    <%= link_to '<em class="fa fa-eye" aria-hidden="true"></em>'.html_safe, customer_panel_path(m),:class=>"btn btn-success", method: :get, title: "View" %>
-
-                    <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_customer_panel_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
-                  
-                  </td>
-                </tr>
-                <%end%>
-                <%end%>
-            </tbody>
-        </table>
-    </div>
+            </tr>
+          <%end%>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
     <!-- /.box-body -->
-    <div class="box-footer">
-        <div class="digg_pagination pull-right">
-                <%= will_paginate @cp %>
-        </div>
+  <div class="box-footer">
+    <div class="digg_pagination pull-right">
+      <%= will_paginate @cp %>
     </div>
+  </div>
 </div>
 <style type="text/css">
    .margin-top-25 {
@@ -88,6 +87,7 @@
         margin-left: 1060px;
         margin-top: 5px;
     }
+
 </style>
 
 <!--js CSV file validation-->
@@ -103,5 +103,42 @@
   });
   
 });
-
 </script>
+<script>
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#example tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+ 
+    // DataTable
+    var table = $('#example').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+ 
+} );
+</script>
+<style type="text/css">
+  tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+  }
+  tfoot {
+    display: table-header-group;
+  }
+</style>
