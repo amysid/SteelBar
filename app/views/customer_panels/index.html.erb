@@ -24,7 +24,7 @@
   </div>
   
   <div class="box-body table-responsive ">
-    <table class="table table-hover table-bordered display" id="example" style="width:100%">
+    <table class="table table-hover table-bordered display " id="customer-panel" style="width:100%">
       <thead>
         <tr style="background-color: #D9D7D7;">
           <th>Sr_No.</th>
@@ -87,6 +87,14 @@
         margin-left: 1060px;
         margin-top: 5px;
     }
+    tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+    }
+    tfoot {
+      display: table-header-group;
+    }
 
 </style>
 
@@ -107,13 +115,13 @@
 <script>
   $(document).ready(function() {
     // Setup - add a text input to each footer cell
-    $('#example tfoot th').each( function () {
+    $('#customer-panel tfoot th').each( function () {
         var title = $(this).text();
         $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
     } );
  
     // DataTable
-    var table = $('#example').DataTable({
+    var table = $('#customer-panel').DataTable({
         initComplete: function () {
             // Apply the search
             this.api().columns().every( function () {
@@ -132,13 +140,3 @@
  
 } );
 </script>
-<style type="text/css">
-  tfoot input {
-    width: 100%;
-    padding: 3px;
-    box-sizing: border-box;
-  }
-  tfoot {
-    display: table-header-group;
-  }
-</style>

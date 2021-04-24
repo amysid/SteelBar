@@ -14,66 +14,72 @@
 
 
 <div class="box box-info">
-    <div class="box-body">
-        <div class="row">
-          <div class="col-md-12">
+  <div class="box-body">
+      <div class="row">
+        <div class="col-md-12">           
+          <div class="form-group" style="text-align: right;">
+            <%= link_to "Add New Coating", new_coating_path, class:"btn btn-success", title: "Add Coating"%> 
             
-            <div class="form-group" style="text-align: right;">
-                        <%= link_to "Add New Coating", new_coating_path, class:"btn btn-success", title: "Add Coating"%> 
-                        
-                        <%= link_to "Download Sample CSV", coatings_path(format: "csv"), class:"btn btn-success", title: "Download Sample CSV"%> 
-                      
-           </div>
-        </div>
+            <%= link_to "Download Sample CSV", coatings_path(format: "csv"), class:"btn btn-success", title: "Download Sample CSV"%> 
+         </div>
       </div>
-    </div> 
-
-    <div class="box-body table-responsive ">
-        <table class="table table-hover table-bordered">
-            <tbody>
-                <tr style="background-color: #D9D7D7;">
-                  <th>Sr_No.</th>
-                  <th> Coating Type</th>
-                  <th> Coating</th>
-                  <th> Cost per sqm</th>
-                  <th> Reading</th>
-
-                  <th colspan="3">Actions</th>
-                  
-                </tr>
-                <br/>
-                 <% if @coating.blank? %>
-                      <div class="global-heading user-head">No Record Found. </div>
-                   <% else %>
-                <% @coating&.each do |m| %>
-                <tr>
-                  <td><%= @s_no += 1 %></td>
-                  <td><%= m.try(:coating_type)%></td>
-                  <td><%= m.try(:coating)%></td>
-                  <td><%= m.try(:cost_per_sqm)%></td>
-                  <td><%= m.try(:reading)%></td>
-
-
-
-                  <td>
-                    <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_coating_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
-                                      
-                    <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  coating_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
-                
-                  </td>
-
-                </tr>
-                <%end%>
-                <%end%>
-            </tbody>
-        </table>
     </div>
+  </div> 
+
+  <div class="box-body table-responsive ">
+    <table class="table table-hover table-bordered display" id = "coating">
+      <thead>
+        <tr style="background-color: #D9D7D7;">
+          <th>Sr_No.</th>
+          <th> Coating Type</th>
+          <th> Coating</th>
+          <th> Cost per sqm</th>
+          <th> Reading</th>
+
+          <th>Actions</th>               
+        </tr>
+      </thead>
+      <tfoot>
+        <tr style="background-color: #D9D7D7;">
+          <th>Sr_No.</th>
+          <th> Coating Type</th>
+          <th> Coating</th>
+          <th> Cost per sqm</th>
+          <th> Reading</th>
+
+          <th>Actions</th>               
+        </tr>
+      </tfoot>
+      <tbody>
+        <% if @coating.blank? %>
+          <div class="global-heading user-head">No Record Found. </div>
+        <% else %>
+          <% @coating&.each do |m| %>
+            <tr>
+              <td><%= @s_no += 1 %></td>
+              <td><%= m.try(:coating_type)%></td>
+              <td><%= m.try(:coating)%></td>
+              <td><%= m.try(:cost_per_sqm)%></td>
+              <td><%= m.try(:reading)%></td>
+
+              <td>
+                <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_coating_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                                  
+                <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  coating_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
+            
+              </td>
+            </tr>
+          <%end%>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
     <!-- /.box-body -->
-    <div class="box-footer">
-        <div class="digg_pagination pull-right">
-                <%= will_paginate @coating %>
-        </div>
+  <div class="box-footer">
+    <div class="digg_pagination pull-right">
+      <%= will_paginate @coating %>
     </div>
+  </div>
 </div>
 <style type="text/css">
    .margin-top-25 {
@@ -86,6 +92,14 @@
     .margin-top-5{
         margin-left: 1060px;
         margin-top: 5px;
+    }
+    tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+    }
+    tfoot {
+      display: table-header-group;
     }
 </style>
 
@@ -103,4 +117,32 @@
   
 });
 
+</script>
+<script>
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#coating tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+ 
+    // DataTable
+    var table = $('#coating').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+ 
+} );
 </script>
