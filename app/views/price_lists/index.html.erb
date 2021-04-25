@@ -48,8 +48,8 @@
 
 
 <div class="box-body table-responsive ">
-  <table class="table table-hover table-bordered">
-    <tbody>
+  <table class="table table-hover table-bordered" id="price_list">
+    <thead>
       <tr style="background-color: #D9D7D7;">
         <th>S.NO.</th>
         <th>Grade</th>
@@ -62,10 +62,28 @@
         <th>Additional Cost(RMB)</th>
         <th>Price(RMB)</th>
         
-        <th colspan="3">Actions</th>
+        <th>Actions</th>
         
       </tr>
-      <br/>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>S.NO.</th>
+        <th>Grade</th>
+        <th>Surface</th>
+        <th>MIN (Thickness in  mm)</th>
+        <th>MAX (Thickness in  mm)</th>
+        <th>Width(mm)</th>
+        <th>Package Wt</th>
+        <th>Base Price  (RMB)</th>
+        <th>Additional Cost(RMB)</th>
+        <th>Price(RMB)</th>
+        
+        <th>Actions</th>
+        
+      </tr>
+    </tfoot>
+    <tbody>
         <% if @pl.blank? %>
             <div class="global-heading user-head">No Record Found. </div>
         <% else %>
@@ -99,4 +117,42 @@
   $('.grade-select').on('change', function() {
     $('#search_grade').val(this.value)
   });
+</script>
+<style type="text/css">
+ tfoot input {
+  width: 100%;
+  padding: 3px;
+  box-sizing: border-box;
+  }
+  tfoot {
+    display: table-header-group;
+  }
+</style>
+<script>
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#price_list tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+ 
+    // DataTable
+    var table = $('#price_list').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+ 
+} );
 </script>

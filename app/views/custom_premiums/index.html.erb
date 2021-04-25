@@ -27,16 +27,28 @@
     
 
     <div class="box-body table-responsive ">
-        <table class="table table-hover table-bordered">
-            <tbody>
-                <tr style="background-color: #D9D7D7;">
-                 <th>Sr_No.</th>
-                  <th> Number Entered</th>
-                  <th> Custom Premium Per MT to Total Cost Calculation</th>
+        <table class="table table-hover table-bordered" id="custom_premium">
+            <thead>
+              <tr style="background-color: #D9D7D7;">
+                <th>Sr_No.</th>
+                <th> Number Entered</th>
+                <th> Custom Premium Per MT to Total Cost Calculation</th>
 
                   
-                </tr>
-                <br/>
+              </tr>
+
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Sr_No.</th>
+                <th> Number Entered</th>
+                <th> Custom Premium Per MT to Total Cost Calculation</th>
+
+                  
+              </tr>
+
+            </tfoot>
+            <tbody>
                  <% if @cp.blank? %>
                       <div class="global-heading user-head">No Record Found. </div>
                    <% else %>
@@ -71,6 +83,14 @@
         margin-left: 1060px;
         margin-top: 5px;
     }
+    tfoot input {
+      width: 100%;
+      padding: 3px;
+      box-sizing: border-box;
+      }
+    tfoot {
+      display: table-header-group;
+    }
 </style>
 
 <!--js CSV file validation-->
@@ -87,4 +107,33 @@
   
 });
 
+</script>
+
+<script>
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#custom_premium tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+ 
+    // DataTable
+    var table = $('#custom_premium').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+ 
+} );
 </script>

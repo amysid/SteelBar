@@ -29,18 +29,25 @@
     </div>
 
     <div class="box-body table-responsive ">
-        <table class="table table-hover table-bordered">
+        <table class="table table-hover table-bordered" id="pod">
+            <thead>
+              <tr style="background-color: #D9D7D7;">
+                <th>Sr_No.</th>
+                <th> Export Ports</th>
+                <th> Freight/20” Container Cost Add</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr style="background-color: #D9D7D7;">
+                <th>Sr_No.</th>
+                <th> Export Ports</th>
+                <th> Freight/20” Container Cost Add</th>
+                <th>Actions</th>
+              </tr>
+            </tfoot>
             <tbody>
-                <tr style="background-color: #D9D7D7;">
-                  <th>Sr_No.</th>
-                  <th> Export Ports</th>
-                  <th> Freight/20” Container Cost Add</th>
-
-                  <th colspan="3">Actions</th>
-                  
-                </tr>
-                <br/>
-                 <% if @pod.blank? %>
+                <% if @pod.blank? %>
                       <div class="global-heading user-head">No Record Found. </div>
                    <% else %>
                 <% @pod&.each do |m| %>
@@ -83,6 +90,14 @@
         margin-left: 1060px;
         margin-top: 5px;
     }
+    tfoot input {
+      width: 100%;
+      padding: 3px;
+      box-sizing: border-box;
+      }
+    tfoot {
+      display: table-header-group;
+    }
 </style>
 
 <!--js CSV file validation-->
@@ -99,4 +114,32 @@
   
 });
 
+</script>
+<script>
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#pod tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+ 
+    // DataTable
+    var table = $('#pod').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+ 
+} );
 </script>
