@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_06_102215) do
+ActiveRecord::Schema.define(version: 2021_05_09_165905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,8 +99,8 @@ ActiveRecord::Schema.define(version: 2021_03_06_102215) do
   create_table "price_lists", force: :cascade do |t|
     t.integer "grade"
     t.string "surface"
-    t.float "min_thickness_in_mm"
-    t.float "max_thickness_in_mm"
+    t.float "min_thickness_in_mm", default: 0.0
+    t.float "max_thickness_in_mm", default: 0.0
     t.integer "width"
     t.string "package"
     t.integer "base_price"
