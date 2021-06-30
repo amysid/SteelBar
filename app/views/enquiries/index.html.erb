@@ -176,7 +176,7 @@
     <!-- /.box-body -->
     <div class="box-footer">
         <div class="digg_pagination pull-right">
-                <%= will_paginate @search %>
+          <%= will_paginate @enquiries %>
         </div>
     </div>
     <!-- <div class = "btn btn-primary">
@@ -230,6 +230,7 @@
  
     // DataTable
     var table = $('#enquiries').DataTable({
+        "bPaginate": false
         initComplete: function () {
             // Apply the search
             this.api().columns().every( function () {

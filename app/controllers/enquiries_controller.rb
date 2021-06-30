@@ -6,15 +6,15 @@ class EnquiriesController < ApplicationController
     if params["search"].present?
     @search = Enquiry.where(name: params["search"]["name"])
     @search = @search.where(:created_at => params["search"]["start"].to_date..params["search"]["end"].to_date) if params["search"]["start"].present?
-    @search = @search.paginate(:page => params[:page], :per_page => 10)
+    @search = @search
     else
-    @search = Enquiry.all.order("created_at desc").paginate(:page => params[:page], :per_page => 10)
+    @search = Enquiry.all.order("created_at desc")
     end
     respond_to do |format|
       format.html
       format.csv { send_data @search.to_csv }
     end
-    @enquiries = @search
+    @enquiries = @search.paginate(:page => params[:page], :per_page => 5)
   end
   
 

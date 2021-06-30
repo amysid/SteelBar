@@ -131,6 +131,7 @@
  
     // DataTable
     var table = $('#surfaces').DataTable({
+        "bPaginate": false
         initComplete: function () {
             // Apply the search
             this.api().columns().every( function () {
