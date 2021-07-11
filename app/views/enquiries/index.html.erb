@@ -25,7 +25,7 @@
             <div class="col-md-2">
                 <!-- /.form-group -->
                 <div class="form-group">
-                    <label>Select status:</label>
+                    <label>Select Customer:</label>
 
                     <%= f.select(:name, options_for_select(Enquiry.order(:name).pluck(:name).uniq,(params.dig :search, :search)) , {:include_blank => "Select Customer"}, {:class => "form-control"} ) %>
 
@@ -173,15 +173,8 @@
             </tbody>
         </table>
     </div>
-    <!-- /.box-body -->
-    <div class="box-footer">
-        <div class="digg_pagination pull-right">
-                <%= will_paginate @search %>
-        </div>
-    </div>
-    <div class = "btn btn-primary">
-       <a href="/enquiries/calculate"  title="Calculate"> Calculate</a>
-     </div>
+    
+    <%= link_to "Calculate", calculate_enquiries_path, class:"btn btn-primary", title: "Calculate"%> 
 </div>
 <style type="text/css">
    .margin-top-25 {

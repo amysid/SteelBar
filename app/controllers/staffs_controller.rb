@@ -7,7 +7,7 @@ class StaffsController < ApplicationController
     @s_no = 0
     @staffs = Staff.search_ilike(params[:search]) if params[:search].present?
   	@staffs ||= Staff.all
-    @staffs = @staffs.order("created_at desc").paginate(:page => params[:page], :per_page => 20)
+    @staffs = @staffs.order("created_at desc")#.paginate(:page => params[:page], :per_page => 20)
     respond_to do |format|
       format.html
       format.csv { send_data @staffs.to_csv }

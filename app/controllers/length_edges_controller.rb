@@ -6,7 +6,7 @@ class LengthEdgesController < ApplicationController
   def index
     @s_no = 0
   	@le = LengthEdge.all
-    @le = @le.order("created_at desc").paginate(:page => params[:page], :per_page => 20)
+    @le = @le.order("created_at desc")#.paginate(:page => params[:page], :per_page => 20)
     respond_to do |format|
       format.html
       format.csv { send_data @le.to_csv }

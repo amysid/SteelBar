@@ -6,7 +6,7 @@ class SurfacesController < ApplicationController
   def index
     @s_no = 0
   	@surface = Surface.all
-    @surface = @surface.order("created_at desc").paginate(:page => params[:page], :per_page => 20)
+    @surface = @surface.order("created_at desc")#.paginate(:page => params[:page], :per_page => 20)
     respond_to do |format|
       format.html
       format.csv { send_data @surface.to_csv }

@@ -6,7 +6,7 @@ before_action :find_cp, only: [:edit, :show, :update, :destroy]
   def index
     @s_no = 0
   	@cp = CustomPremium.all
-    @cp = @cp.order("created_at desc").paginate(:page => params[:page], :per_page => 10)
+    @cp = @cp.order("created_at desc")#.paginate(:page => params[:page], :per_page => 10)
     respond_to do |format|
       format.html
       format.csv { send_data @cp.to_csv }

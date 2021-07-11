@@ -6,7 +6,7 @@ class PodsController < ApplicationController
   def index
     @s_no = 0
   	@pod = Pod.all
-    @pod = @pod.order("created_at desc").paginate(:page => params[:page], :per_page => 10)
+    @pod = @pod.order("created_at desc")#.paginate(:page => params[:page], :per_page => 10)
     respond_to do |format|
       format.html
       format.csv { send_data @pod.to_csv }

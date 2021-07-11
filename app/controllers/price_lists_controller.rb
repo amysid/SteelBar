@@ -20,11 +20,11 @@ class PriceListsController < ApplicationController
     if params["search"].present?
       @grade = PriceList.find_by(grade: params["search"]["grade"]).grade
       $supplier = Supplier.find(params[:search][:supplier_id])
-      @pl = PriceList.where(grade: @grade, supplier_id: $supplier.id)
+      @pl = PriceList.where(grade: @grade, supplier_id: $supplier.id).order("created_at desc")
       @price_lists = $supplier.price_lists.order(:grade).select('distinct(grade)')
     else
       $supplier = Supplier.find(params[:format])
-      @pl = $supplier.price_lists
+      @pl = $supplier.price_lists.order("created_at desc")
       @price_lists = $supplier.price_lists.order(:grade).select('distinct(grade)')
     end
     
