@@ -47,11 +47,12 @@ class EnquiriesController < ApplicationController
     @edge = LengthEdge.find_by(source: enquiry.source, grade: enquiry.grade)
     @surface = Surface.find_by(surface: enquiry.surface)
     @rmb_cost = @price_list&.base_price
-    @surface_sqm_cost = calculate_surface_cost(@surface, enquiry)
-    @length_cost = length_cost(enquiry.length, @edge, enquiry.package_wt) 
-    @edge_cost = edge_cost(@edge, enquiry.edge)
-    @coating_cost = coating_cost(enquiry.coating)
-    @total_cost = @rmb_cost + @surface_sqm_cost + @length_cost + @edge_cost + @coating_cost
+    @surface_sqm_cost = calculate_surface_cost(@surface, enquiry) #SURFACE can be a base level OR unique. If unique such as N4 or 8K then have to add the SURFACE process fee to the base surface.
+    @length_cost = length_cost(enquiry.length, @edge, enquiry.package_wt) #if LENGTH is COIL (base length) no extra process fee, but if LENGTH is any numerical value then addt he respective process fee based on the SOURCE / GRADE in the enquiry.
+    @edge_cost = edge_cost(@edge, enquiry.edge) #If EDGE is M (base edge) no extra process fee, but if EDGE is S then must add the respective process fee for S based on the SOURCE / GRADE in the enquiry.
+    @coating_cost = coating_cost(enquiry.coating) # Under COATING if there is paper or no value then no extra process fee. But if there is any other COATING and COATING TYPE which matches to the values in the coating backend then add the respective sqm process fee (sqm converted to per MT)
+    @custom_p_cost = custom_premium_cost(enquiry) #CUSTOM PREMIUM is an additional process fee we have to add based on the enquiry (can be because of scarce raw materials or commission for agent). This is always in per MT.
+    @total_cost = @rmb_cost + @surface_sqm_cost + @length_cost + @edge_cost + @coating_cost + @custom_p_cost
   end
 
   def calculate_surface_cost(surface, enquiry)
@@ -64,11 +65,11 @@ class EnquiriesController < ApplicationController
     elsif @surface.surface = "DP"
       surface_sqmcost = 450
     else
-      surface_sqmcost = (@surface.cost/thickness/density)*1000
+      surface_sqmcost = (@surface.cost/thickness/density)*1000 
     end
     surfaces_without_process_fee = ['N1','2B','2BA','BA']
     if surfaces_without_process_fee.include?(enquiry.surface)
-      surface_sqmcost = surface_sqmcost + 0 #process fee
+      surface_sqmcost = surface_sqmcost + 0 #process fee,, per SQM calculation So basically, the SQM fee per MT is calculated using the SQM PROCESS FEE and the THICKNESS in the enquiry. The 7.93*1000 is a density constant.
     end   
   end
   
@@ -86,7 +87,7 @@ class EnquiriesController < ApplicationController
     else
       process_fee = edge.length_cost_add
     end
-    if length == "COIL" && package_wt < 4
+    if length == "COIL" && package_wt.to_i < 4
       process_fee = process_fee + 100
     elsif length.is_a?(Integer) && package_wt.to_i < 4
        process_fee = process_fee + 100
@@ -100,6 +101,10 @@ class EnquiriesController < ApplicationController
     else
       process_fee = 0 #based on the SOURCE / GRADE in the enquiry.
     end
+  end
+
+  def custom_premium_cost(enquiry)
+    enquiry.custom_premium.to_i
   end
 
 end
