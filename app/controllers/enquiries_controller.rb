@@ -46,12 +46,13 @@ class EnquiriesController < ApplicationController
     @price_list = Supplier.find_by(name: enquiry.source).price_lists.find_by(grade: grade)
     @edge = LengthEdge.find_by(source: enquiry.source, grade: enquiry.grade)
     @surface = Surface.find_by(surface: enquiry.surface)
-    @rmb_cost = @price_list&.base_price
+    @rmb_cost = @price_list&.base_price rescue 0
     @surface_sqm_cost = calculate_surface_cost(@surface, enquiry) #SURFACE can be a base level OR unique. If unique such as N4 or 8K then have to add the SURFACE process fee to the base surface.
     @length_cost = length_cost(enquiry.length, @edge, enquiry.package_wt) #if LENGTH is COIL (base length) no extra process fee, but if LENGTH is any numerical value then addt he respective process fee based on the SOURCE / GRADE in the enquiry.
     @edge_cost = edge_cost(@edge, enquiry.edge) #If EDGE is M (base edge) no extra process fee, but if EDGE is S then must add the respective process fee for S based on the SOURCE / GRADE in the enquiry.
-    @coating_cost = coating_cost(enquiry.coating) # Under COATING if there is paper or no value then no extra process fee. But if there is any other COATING and COATING TYPE which matches to the values in the coating backend then add the respective sqm process fee (sqm converted to per MT)
+    @coating_cost = coating_cost(enquiry.coating, enquiry.coating_type,enquiry.thick) # Under COATING if there is paper or no value then no extra process fee. But if there is any other COATING and COATING TYPE which matches to the values in the coating backend then add the respective sqm process fee (sqm converted to per MT)
     @custom_p_cost = custom_premium_cost(enquiry) #CUSTOM PREMIUM is an additional process fee we have to add based on the enquiry (can be because of scarce raw materials or commission for agent). This is always in per MT.
+    @rmb_cost = 0 if !@price_list&.base_price.present?
     @total_cost = @rmb_cost + @surface_sqm_cost + @length_cost + @edge_cost + @coating_cost + @custom_p_cost
   end
 
@@ -60,7 +61,7 @@ class EnquiriesController < ApplicationController
     density = 7.93
     thickness = enquiry.thick
     @sqmcost =  @surface&.cost
-    if @surface = "SP"
+    if @surface.surface = "SP"
       surface_sqmcost = 350
     elsif @surface.surface = "DP"
       surface_sqmcost = 450
@@ -97,11 +98,16 @@ class EnquiriesController < ApplicationController
   end
 
 
-  def coating_cost(coating)
-    if (coating == "Paper" || "")
+  def coating_cost(coating, coating_type, thickness)
+    if coating == "paper" || coating == nil
       process_fee = 0
     else
-      process_fee = 0 #based on the SOURCE / GRADE in the enquiry.
+    density = 7.93
+    thickness = thickness.to_f
+    @coating = Coating.find_by(coating: coating, coating_type: coating_type)
+    @fee = @coating&.cost_per_sqm
+    process_fee = (@fee/thickness/density)*1000  #based on the SOURCE / GRADE in the enquiry. (<PROCESS FEE> / <THICKNESS> / 7.93*1000)
+    process_fee = process_fee.round(4)
     end
   end
 
