@@ -31,7 +31,10 @@ class EnquiriesController < ApplicationController
     @enquiries.each do |enquiry|
       @grade = enquiry.grade
       @calculate_all_cost = calculate_all(@grade, enquiry)
-      enquiry.update(unit_price: @calculate_all_cost)
+      @calculate_all_cost = @calculate_all_cost.round(2)
+      @usd_cost = exc_usd_cost(@calculate_all_cost)
+      @usd_cost = @usd_cost.round(2)
+      enquiry.update(unit_price: @calculate_all_cost,usd_price: @usd_cost)
     end
     redirect_to enquiries_path
   end
@@ -107,12 +110,18 @@ class EnquiriesController < ApplicationController
     @coating = Coating.find_by(coating: coating, coating_type: coating_type)
     @fee = @coating&.cost_per_sqm
     process_fee = (@fee/thickness/density)*1000  #based on the SOURCE / GRADE in the enquiry. (<PROCESS FEE> / <THICKNESS> / 7.93*1000)
-    process_fee = process_fee.round(4)
+    process_fee = process_fee
     end
   end
 
   def custom_premium_cost(enquiry)
     enquiry.custom_premium.to_i
   end
-
+ 
+  def exc_usd_cost(rmb_cost)
+   rebate = rmb_cost-((rmb_cost/1.17)*0.13)
+   exchange_rate_usd = rebate/GeneralPanel.last.exch_rate
+   final_usd_cost = exchange_rate_usd*(100/100 + GeneralPanel.last.exp )
+   final_usd_cost = final_usd_cost
+  end
 end
