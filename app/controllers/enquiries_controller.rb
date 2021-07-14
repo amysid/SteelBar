@@ -46,7 +46,7 @@ class EnquiriesController < ApplicationController
     @price_list = Supplier.find_by(name: enquiry.source).price_lists.find_by(grade: grade)
     @edge = LengthEdge.find_by(source: enquiry.source, grade: enquiry.grade)
     @surface = Surface.find_by(surface: enquiry.surface)
-    @rmb_cost = @price_list&.base_price rescue 0
+    @rmb_cost = @price_list&.base_price
     @surface_sqm_cost = calculate_surface_cost(@surface, enquiry) #SURFACE can be a base level OR unique. If unique such as N4 or 8K then have to add the SURFACE process fee to the base surface.
     @length_cost = length_cost(enquiry.length, @edge, enquiry.package_wt) #if LENGTH is COIL (base length) no extra process fee, but if LENGTH is any numerical value then addt he respective process fee based on the SOURCE / GRADE in the enquiry.
     @edge_cost = edge_cost(@edge, enquiry.edge) #If EDGE is M (base edge) no extra process fee, but if EDGE is S then must add the respective process fee for S based on the SOURCE / GRADE in the enquiry.
@@ -70,7 +70,7 @@ class EnquiriesController < ApplicationController
     end
     surfaces_without_process_fee = ['N1','2B','2BA','BA']
     if surfaces_without_process_fee.include?(enquiry.surface)
-      surface_sqmcost = surface_sqmcost + 0 #process fee,, per SQM calculation So basically, the SQM fee per MT is calculated using the SQM PROCESS FEE and the THICKNESS in the enquiry. The 7.93*1000 is a density constant.
+      surface_sqmcost = surface_sqmcost#process fee,, per SQM calculation So basically, the SQM fee per MT is calculated using the SQM PROCESS FEE and the THICKNESS in the enquiry. The 7.93*1000 is a density constant.
     end   
   end
   
