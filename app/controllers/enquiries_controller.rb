@@ -32,7 +32,7 @@ class EnquiriesController < ApplicationController
       @grade = enquiry.grade
       @calculate_all_cost = calculate_all(@grade, enquiry)
       @calculate_all_cost = @calculate_all_cost.round(2)
-      @usd_cost = exc_usd_cost(@calculate_all_cost)
+      @usd_cost = exc_usd_cost_with_freight_calculation(@calculate_all_cost,enquiry)
       @usd_cost = @usd_cost.round(2)
       enquiry.update(unit_price: @calculate_all_cost,usd_price: @usd_cost)
     end
@@ -117,11 +117,15 @@ class EnquiriesController < ApplicationController
   def custom_premium_cost(enquiry)
     enquiry.custom_premium.to_i
   end
- 
-  def exc_usd_cost(rmb_cost)
-   rebate = rmb_cost-((rmb_cost/1.17)*0.13)
-   exchange_rate_usd = rebate/GeneralPanel.last.exch_rate
-   final_usd_cost = exchange_rate_usd*(100/100 + GeneralPanel.last.exp )
-   final_usd_cost = final_usd_cost
+
+
+  
+  def exc_usd_cost_with_freight_calculation(rmb_cost, enquiry)
+   port = enquiry.port
+   exchange_rate_usd = rmb_cost/GeneralPanel.last.exch_rate
+   freight = Pod.find_by(export_pod: port)&.container_cost_add
+   container_loading = CustomerPanel.find_by(name: enquiry.name)&.container_loading_name&.to_i
+   freight_cal = freight/container_loading
+   final_usd_cost = exchange_rate_usd + freight_cal
   end
 end

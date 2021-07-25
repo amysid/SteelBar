@@ -1,5 +1,6 @@
 <div class="my-btn">
   <h4><%= $supplier.name%> Supplier</h4>
+  
   <div class="two-btn">
     <%= form_tag import_price_lists_path, multipart: true do%>
       <div class="form-group">
@@ -20,9 +21,8 @@
 <div class="cover-select">
 <%= form_with scope: :search, url: price_lists_path, method: :get,autocomplete: :off, id: 'search_price', local: true do |f| %>
   <div class="sub-seclect">
-    <div class="contant-select">
-      <h5>Grade</h5>
-      <div>
+    <div class="form-group">
+      <label>Grade</label>
         <%#= f.select(:grade, options_for_select(@supplier.price_lists.order(:grade).pluck(:grade, :id),(params.dig :search, :search)) , {:include_blank => "Select Grade"}, {:class => "form-control"} ) %>
 
         <select class = "grade-select">
@@ -36,15 +36,15 @@
         <%= f.hidden_field :grade %>
         <%= f.hidden_field :supplier_id, value: $supplier.id %>
       </div>
-    </div>
    <div class="cover-btns">
       <!-- <a href="#" class="single-btn">On click</a> -->
-      <%= f.submit "Search", class: "single-btn", title: "Search"%>
+      <%= f.submit "Search", class: "btn-primary btn", title: "Search"%>
 
    </div>
   </div>
+  </div>
 <%end%>
-</div>
+<!-- </div> -->
 
 
 <div class="box-body table-responsive ">
@@ -127,6 +127,20 @@
   tfoot {
     display: table-header-group;
   }
+  .grade-select {
+    width: 100%;
+}
+  .cover-select {
+    background: #ecf0f5;
+    width: 66%;
+    max-width: 90%;
+    margin: 23px auto;
+    padding: 20px 0px;
+    border: 1px dashed #d7dee6;
+    border-radius: 20px;
+}
+
+.cover-btns{text-align: left!important;}
 </style>
 <script>
   $(document).ready(function() {

@@ -3,8 +3,14 @@ class PriceList < ApplicationRecord
   def self.import(file, supplier)
     CSV.foreach(file.path, headers: true) do |row|
       @supplier = supplier
-      @pl = @supplier.price_lists.new(grade: row["Grade"], surface: row["Surface"], min_thickness_in_mm: row["MIN (Thickness in  mm)"], max_thickness_in_mm: row["MAX (Thickness in  mm)"], width: row["Width(mm)"], package: row["Package Wt"], base_price: row["Base Price  (RMB)"], additional_cost: row["Additional Cost(RMB)"], price: row["Price(RMB)"] )
-     @pl.save!
+      pls = @supplier.price_lists.where(grade: row["Grade"], surface: row["Surface"]).first
+      if pls.present? 
+       pls.update_attributes(grade: row["Grade"], surface: row["Surface"], min_thickness_in_mm: row["MIN (Thickness in  mm)"], max_thickness_in_mm: row["MAX (Thickness in  mm)"], width: row["Width(mm)"], package: row["Package Wt"], base_price: row["Base Price  (RMB)"], additional_cost: row["Additional Cost(RMB)"], price: row["Price(RMB)"] ) 
+       pls.save!
+      else
+       @pl = @supplier.price_lists.new(grade: row["Grade"], surface: row["Surface"], min_thickness_in_mm: row["MIN (Thickness in  mm)"], max_thickness_in_mm: row["MAX (Thickness in  mm)"], width: row["Width(mm)"], package: row["Package Wt"], base_price: row["Base Price  (RMB)"], additional_cost: row["Additional Cost(RMB)"], price: row["Price(RMB)"] )
+       @pl.save!
+      end
     # PriceList.create! row.to_hash
     end
   end
