@@ -33,7 +33,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><%= Enquiry.where(unit_price: nil, usd_price: nil).count %></h3>
+              <h3><%= Enquiry.where(unit_price: nil, usd_price: nil)&.count %></h3>
 
               <p>Pending Enquiries</p>
             </div>
