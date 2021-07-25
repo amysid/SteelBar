@@ -56,7 +56,8 @@ class EnquiriesController < ApplicationController
     @coating_cost = coating_cost(enquiry.coating, enquiry.coating_type,enquiry.thick) # Under COATING if there is paper or no value then no extra process fee. But if there is any other COATING and COATING TYPE which matches to the values in the coating backend then add the respective sqm process fee (sqm converted to per MT)
     @custom_p_cost = custom_premium_cost(enquiry) #CUSTOM PREMIUM is an additional process fee we have to add based on the enquiry (can be because of scarce raw materials or commission for agent). This is always in per MT.
     @rmb_cost = 0 if !@price_list&.base_price.present?
-    @total_cost = @rmb_cost + @surface_sqm_cost + @length_cost + @edge_cost + @coating_cost + @custom_p_cost
+    @other_charges = other_charges(enquiry, @length_cost+@edge_cost)
+    @total_cost = @rmb_cost + @surface_sqm_cost + @coating_cost + @custom_p_cost + @other_charges
   end
 
   def calculate_surface_cost(surface, enquiry)
@@ -118,7 +119,13 @@ class EnquiriesController < ApplicationController
     enquiry.custom_premium.to_i
   end
 
-
+  def other_charges(enquiry, le_cost)
+    if enquiry.grade == 201 && enquiry.length.is_a?(Integer) && enquiry.edge.is_a?(Integer)
+      length_edge_cost = le_cost-100
+    else
+      length_edge_cost = le_cost
+    end
+  end
   
   def exc_usd_cost_with_freight_calculation(rmb_cost, enquiry)
    port = enquiry.port
