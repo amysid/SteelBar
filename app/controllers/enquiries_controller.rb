@@ -31,9 +31,9 @@ class EnquiriesController < ApplicationController
     @enquiries.each do |enquiry|
       @grade = enquiry.grade
       @calculate_all_cost = calculate_all(@grade, enquiry)
-      @calculate_all_cost = @calculate_all_cost.round(2)
+      @calculate_all_cost = @calculate_all_cost&.round(2)
       @usd_cost = exc_usd_cost_with_freight_calculation(@calculate_all_cost,enquiry)
-      @usd_cost = @usd_cost.round(2)
+      @usd_cost = @usd_cost&.round(2)
       enquiry.update(unit_price: @calculate_all_cost,usd_price: @usd_cost)
     end
     redirect_to enquiries_path, notice: ["Enquiry Calculated"]
@@ -63,14 +63,14 @@ class EnquiriesController < ApplicationController
   def calculate_surface_cost(surface, enquiry)
     @surface = surface
     density = 7.93
-    thickness = enquiry&.thick
+    thickness = enquiry.thick
     @sqmcost =  @surface&.cost
-    if @surface&.surface = "SP"
+    if @surface.surface = "SP"
       surface_sqmcost = 350
-    elsif @surface&.surface = "DP"
+    elsif @surface.surface = "DP"
       surface_sqmcost = 450
     else
-      surface_sqmcost = (@surface&.cost/thickness/density)*1000 
+      surface_sqmcost = (@surface.cost/thickness/density)*1000 
     end
     surfaces_without_process_fee = ['N1','2B','2BA','BA']
     if surfaces_without_process_fee.include?(enquiry.surface)
@@ -88,12 +88,12 @@ class EnquiriesController < ApplicationController
 
 
   def length_cost(length, edge, package_wt)
-    if length == "COIL"
+    if length == "Coil"
       process_fee = 0
     else
       process_fee = edge.length_cost_add
     end
-    if length == "COIL" && package_wt.to_i < 4
+    if length == "Coil" && package_wt.to_i < 4
       process_fee = process_fee + 100
     elsif length.is_a?(Integer) && package_wt.to_i < 4
        process_fee = process_fee + 100
@@ -133,6 +133,6 @@ class EnquiriesController < ApplicationController
    freight = Pod.find_by(export_pod: port)&.container_cost_add
    container_loading = CustomerPanel.find_by(name: enquiry.name)&.container_loading_name&.to_i
    freight_cal = freight/container_loading
-   final_usd_cost = exchange_rate_usd + freight_cal
+   final_usd_cost = exchange_rate_usd + freight_cal + GeneralPanel.last.local_transportation_cost
   end
 end
