@@ -63,14 +63,14 @@ class EnquiriesController < ApplicationController
   def calculate_surface_cost(surface, enquiry)
     @surface = surface
     density = 7.93
-    thickness = enquiry.thick
+    thickness = enquiry&.thick
     @sqmcost =  @surface&.cost
-    if @surface.surface = "SP"
+    if @surface&.surface = "SP"
       surface_sqmcost = 350
-    elsif @surface.surface = "DP"
+    elsif @surface&.surface = "DP"
       surface_sqmcost = 450
     else
-      surface_sqmcost = (@surface.cost/thickness/density)*1000 
+      surface_sqmcost = (@surface&.cost/thickness/density)*1000 
     end
     surfaces_without_process_fee = ['N1','2B','2BA','BA']
     if surfaces_without_process_fee.include?(enquiry.surface)
