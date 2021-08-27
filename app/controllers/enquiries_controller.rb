@@ -36,7 +36,7 @@ class EnquiriesController < ApplicationController
       @usd_cost = @usd_cost.round(2)
       enquiry.update(unit_price: @calculate_all_cost,usd_price: @usd_cost)
     end
-    redirect_to enquiries_path
+    redirect_to enquiries_path, notice: ["Enquiry Calculated"]
   end
 
   def show
