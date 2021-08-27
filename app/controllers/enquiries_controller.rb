@@ -8,7 +8,7 @@ class EnquiriesController < ApplicationController
     @search = @search.where(:created_at => params["search"]["start"].to_date..params["search"]["end"].to_date) if params["search"]["start"].present?
     @search = @search#.paginate(:page => params[:page], :per_page => 10)
     else
-    @search = Enquiry.all.order("created_at desc")#.paginate(:page => params[:page], :per_page => 10)
+    @search = Enquiry.all#.order("created_at desc")#.paginate(:page => params[:page], :per_page => 10)
     end
     respond_to do |format|
       format.html
@@ -63,11 +63,11 @@ class EnquiriesController < ApplicationController
   def calculate_surface_cost(surface, enquiry)
     @surface = surface
     density = 7.93
-    thickness = enquiry.thick
+    thickness = enquiry.thick.to_f
     @sqmcost =  @surface&.cost
-    if @surface.surface = "SP"
+    if @surface.surface == "SP"
       surface_sqmcost = 350
-    elsif @surface.surface = "DP"
+    elsif @surface.surface == "DP"
       surface_sqmcost = 450
     else
       surface_sqmcost = (@surface.cost/thickness/density)*1000 
@@ -88,12 +88,12 @@ class EnquiriesController < ApplicationController
 
 
   def length_cost(length, edge, package_wt)
-    if length == "Coil"
+    if length.upcase == "COIL"
       process_fee = 0
     else
       process_fee = edge.length_cost_add
     end
-    if length == "Coil" && package_wt.to_i < 4
+    if length.upcase == "COIL" && package_wt.to_i < 4
       process_fee = process_fee + 100
     elsif length.is_a?(Integer) && package_wt.to_i < 4
        process_fee = process_fee + 100
@@ -103,7 +103,7 @@ class EnquiriesController < ApplicationController
 
 
   def coating_cost(coating, coating_type, thickness)
-    if coating == "paper" || coating == nil
+    if coating.upcase == "PAPER" || coating == nil
       process_fee = 0
     else
     density = 7.93
@@ -129,10 +129,10 @@ class EnquiriesController < ApplicationController
   
   def exc_usd_cost_with_freight_calculation(rmb_cost, enquiry)
    port = enquiry.port
-   exchange_rate_usd = rmb_cost/GeneralPanel.last.exch_rate
+   exchange_rate_usd = rmb_cost/GeneralPanel.last.exch_rate  + GeneralPanel.last.local_transportation_cost
    freight = Pod.find_by(export_pod: port)&.container_cost_add
    container_loading = CustomerPanel.find_by(name: enquiry.name)&.container_loading_name&.to_i
    freight_cal = freight/container_loading
-   final_usd_cost = exchange_rate_usd + freight_cal + GeneralPanel.last.local_transportation_cost
+   final_usd_cost = exchange_rate_usd + freight_cal
   end
 end
