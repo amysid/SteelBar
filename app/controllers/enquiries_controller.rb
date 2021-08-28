@@ -46,10 +46,10 @@ class EnquiriesController < ApplicationController
   private
 
   def calculate_all(grade, enquiry)
-    @price_list = Supplier.find_by(name: enquiry.source).price_lists.find_by(grade: grade)
+    @price_list = Supplier.find_by(name: enquiry.source).price_lists.where(grade: grade).where(':thick BETWEEN min_thickness_in_mm AND max_thickness_in_mm', thick: enquiry.thick.to_f).first
     @edge = LengthEdge.find_by(source: enquiry.source, grade: enquiry.grade)
     @surface = Surface.find_by(surface: enquiry.surface)
-    @rmb_cost = @price_list&.base_price
+    @rmb_cost = @price_list&.price
     @surface_sqm_cost = calculate_surface_cost(@surface, enquiry) #SURFACE can be a base level OR unique. If unique such as N4 or 8K then have to add the SURFACE process fee to the base surface.
     @length_cost = length_cost(enquiry.length, @edge, enquiry.package_wt) #if LENGTH is COIL (base length) no extra process fee, but if LENGTH is any numerical value then addt he respective process fee based on the SOURCE / GRADE in the enquiry.
     @edge_cost = edge_cost(@edge, enquiry.edge) #If EDGE is M (base edge) no extra process fee, but if EDGE is S then must add the respective process fee for S based on the SOURCE / GRADE in the enquiry.
