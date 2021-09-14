@@ -28,6 +28,7 @@ https://datatables.net/examples/api/multi_filter.html
 Admin Panel wireframes - https://3vspzz.axshare.com/#id=b938ni&p=dashboard&g=1
 
 Staff Panel New version- https://8emy9o.axshare.com
+ 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
 
 # price list index
 def index

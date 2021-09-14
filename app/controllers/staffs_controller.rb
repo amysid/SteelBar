@@ -26,6 +26,7 @@ class StaffsController < ApplicationController
   def create
     @staff = Staff.new(staff_params)
     if @staff.save!
+      UserMailer.with(user: @staff).welcome_email.deliver_later
       flash[:notice] = ["Staff Created Successfully."]
       redirect_to staffs_path
     else
