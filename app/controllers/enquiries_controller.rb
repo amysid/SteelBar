@@ -8,7 +8,7 @@ class EnquiriesController < ApplicationController
     @search = @search.where(:created_at => params["search"]["start"].to_date..params["search"]["end"].to_date) if params["search"]["start"].present?
     @search = @search#.paginate(:page => params[:page], :per_page => 10)
     else
-    @search = Enquiry.all#.order("created_at desc")#.paginate(:page => params[:page], :per_page => 10)
+    @search = Enquiry.where(status: false)#.order("created_at desc")#.paginate(:page => params[:page], :per_page => 10)
     end
     respond_to do |format|
       format.html
@@ -33,14 +33,31 @@ class EnquiriesController < ApplicationController
       @calculate_all_cost = calculate_all(@grade, enquiry)
       @calculate_all_cost = @calculate_all_cost&.round(2)
       @usd_cost = exc_usd_cost_with_freight_calculation(@calculate_all_cost,enquiry)
+      @fob_cost = fob_price_calculation(@calculate_all_cost,enquiry)
+      @cif_cost = cif_price_calculation(@usd_cost,enquiry)
+
       @usd_cost = @usd_cost&.round(2)
-      enquiry.update(unit_price: @calculate_all_cost,usd_price: @usd_cost)
+      @fob_cost = @fob_cost&.round(2)
+      @cif_cost = @cif_cost&.round(2)
+
+      enquiry.update(unit_price: @calculate_all_cost,usd_price: @usd_cost,fob_price: @fob_cost, cif_price: @cif_cost)
     end
     redirect_to enquiries_path, notice: ["Enquiry Calculated"]
   end
 
   def show
     @enquiry = Enquiry.find(params["id"])
+  end
+
+  def destroy
+    @enquiry = Enquiry.find(params["id"])
+    if @enquiry.update(status: !@enquiry.status)
+      flash[:notice] = ["Deleted Successfully."]
+      redirect_to  enquiries_path
+    else
+      flash[:alert] = @enquiry.errors.full_messages
+      redirect_to  enquiries_path
+    end
   end
 
   private
@@ -56,8 +73,9 @@ class EnquiriesController < ApplicationController
     @coating_cost = coating_cost(enquiry.coating, enquiry.coating_type,enquiry.thick) # Under COATING if there is paper or no value then no extra process fee. But if there is any other COATING and COATING TYPE which matches to the values in the coating backend then add the respective sqm process fee (sqm converted to per MT)
     @custom_p_cost = custom_premium_cost(enquiry) #CUSTOM PREMIUM is an additional process fee we have to add based on the enquiry (can be because of scarce raw materials or commission for agent). This is always in per MT.
     @rmb_cost = 0 if !@price_list&.base_price.present?
-    @other_charges = other_charges(enquiry, @length_cost+@edge_cost)
-    @total_cost = @rmb_cost + @surface_sqm_cost + @coating_cost + @custom_p_cost + @other_charges
+    @other_charges_length = other_charges_length(enquiry)
+    @other_charges_edge = other_charges_edge(enquiry)
+    @total_cost = @rmb_cost + @surface_sqm_cost + @coating_cost + @custom_p_cost + @other_charges_length + @other_charges_edge
   end
 
   def calculate_surface_cost(surface, enquiry)
@@ -119,12 +137,27 @@ class EnquiriesController < ApplicationController
     enquiry.custom_premium.to_i
   end
 
-  def other_charges(enquiry, le_cost)
-    if enquiry.grade == 201 && enquiry.length.is_a?(Integer) && enquiry.edge.is_a?(Integer)
-      length_edge_cost = le_cost-100
-    else
-      length_edge_cost = le_cost
-    end
+  def other_charges_length(enquiry)
+    if enquiry.length.upcase == "COIL"
+      process_fee = 0
+     else
+      enquiry.length.to_i.is_a?(Integer)
+      process_fee = 250
+    end                  
+    # if enquiry.grade == 201 && enquiry.length.is_a?(Integer) && enquiry.edge.is_a?(Integer)
+    #   length_edge_cost = le_cost-100
+    # else
+    #   length_edge_cost = le_cost
+    # end
+  end
+
+  def other_charges_edge(enquiry)
+    if enquiry.edge.upcase == "M"
+      process_fee = 0
+     else
+      enquiry.edge.upcase == "S"
+      process_fee = 200
+    end                    
   end
   
   def exc_usd_cost_with_freight_calculation(rmb_cost, enquiry)
@@ -135,4 +168,17 @@ class EnquiriesController < ApplicationController
    freight_cal = freight/container_loading
    final_usd_cost = exchange_rate_usd + freight_cal
   end
+
+  def fob_price_calculation(rmb_cost,enquiry)
+   exchange_rate_usd = rmb_cost/GeneralPanel.last.exch_rate  + GeneralPanel.last.local_transportation_cost
+   profit = CustomerPanel.find_by(name: enquiry.name).customer_panel_details.where(grade: enquiry.grade.to_i, surface: enquiry.classification)&.first&.profit
+   final_fob_cost = (exchange_rate_usd*(100+profit))/100
+  end
+
+  def cif_price_calculation(usd_cost,enquiry)
+   final_usd_cost = usd_cost
+   profit = CustomerPanel.find_by(name: enquiry.name).customer_panel_details.where(grade: enquiry.grade.to_i, surface: enquiry.classification)&.first&.profit
+   final_cif_cost = (final_usd_cost*(100+profit))/100
+  end
+
 end

@@ -107,9 +107,12 @@
                 <th> <label> Port </label></th>
                 <% unless User.pluck(:email).exclude?(current_user.email) %>
                 <th><label style="width: 100px">  Unit Price(RMB)</label></th>
-                <%end%>
                 <th> <label style="width: 65px"> USD Price</label></th>
-                <!-- <th colspan="3">Actions</th> -->
+                <%end%>
+                <th> <label style="width: 65px"> FOB Price</label></th>
+                <th> <label style="width: 65px"> CIF Price</label></th>
+
+                <th colspan="3">Actions</th>
 
 
               </tr>
@@ -133,10 +136,13 @@
                   <th> Port</th>
                   <% unless User.pluck(:email).exclude?(current_user.email) %>
                   <th> Unit Price(RMB)</th>
-                  <%end%>
                   <th> USD Price</th>
-                  <!-- <th colspan="3">Actions</th> -->
-
+                  <%end%>
+                  <th> FOB Price</th>
+                  <th> CIF Price</th>
+                  <th colspan="3">Actions</th>
+                  <!-- <th>Actions</th> -->
+                  
                 </tr>
               </tfoot>
             </thead>
@@ -164,11 +170,15 @@
                     <td><%= user&.port %></td>
                   <% unless User.pluck(:email).exclude?(current_user.email) %>
                     <td><%= user&.unit_price %></td>
-                  <%end%>
                     <td><%= user&.usd_price %></td>
-                   <!--  <td>
-                    <%#= link_to '<em class="fa fa-eye" aria-hidden="true"></em>'.html_safe, enquiry_path(user),:class=>"btn btn-success", method: :get, title: "View" %>
-                    </td> -->
+                  <%end%>
+                    <td><%= user&.fob_price %></td>
+                    <td><%= user&.cif_price %></td>
+                    
+                   <td>
+                    <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  enquiry_path(user), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
+
+                    </td>
                 </tr>
                 <%end%>
                 <%end%>
