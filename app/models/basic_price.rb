@@ -1,0 +1,2 @@
+class BasicPrice < ApplicationRecord
+end
