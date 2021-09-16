@@ -12,6 +12,9 @@
     <%= link_to "Download Sample CSV", pricelistsample_price_lists_path(format: "csv"), class:"btn btn-success margin-top-25", title: "Download Sample CSV"%> 
 
     <%=link_to 'Add New Details', {:controller => "price_lists", :action => "new", :supplier_id => $supplier.id }, class: "btn btn-primary"%>
+
+    <%= link_to "Back", suppliers_path, class:"btn btn-danger",style: "margin-right: 10px", title: "Back"%> 
+    
     
     <!-- <a href="#" class="btn-custom">First</a> -->
   </div>

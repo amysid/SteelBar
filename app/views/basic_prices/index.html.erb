@@ -1,0 +1,120 @@
+<div class="my-btn">
+  <h4><%= $supplier.name%> Supplier</h4>
+  
+  <div class="two-btn">
+   
+    <%=link_to 'Add Basic Price', {:controller => "basic_prices", :action => "new", :supplier_id => $supplier.id }, class: "btn btn-primary"%>
+    <%= link_to "Back", suppliers_path, class:"btn btn-danger",style: "margin-right: 10px", title: "Back"%> 
+    
+    <!-- <a href="#" class="btn-custom">First</a> -->
+  </div>
+
+  
+</div>
+
+
+
+
+
+<div class="box-body table-responsive ">
+  <table class="table table-hover table-bordered" id="price_list">
+    <thead>
+      <tr style="background-color: #D9D7D7;">
+        <th>S.NO</th>
+        <th>Grade</th>
+        <th>Base Price  (RMB)</th>
+         
+        <th>Actions</th>
+        
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>S.NO.</th>
+        <th>Grade</th>
+        <th>Base Price  (RMB)</th>
+        
+        <th>Actions</th>
+        
+      </tr>
+    </tfoot>
+    <tbody>
+        <% if @bp.blank? %>
+            <div class="global-heading user-head">No Record Found. </div>
+        <% else %>
+          <% @bp&.each do |m| %>
+          <tr>
+              <td><%= @s_no+=1 %></td>
+              <td><%= m&.grade %></td>
+              <td><%= m&.base_price %></td>
+
+              <td>
+              <div class = "action buttons ">
+                <%= link_to '<em class="fa fa-edit" aria-hidden="true"></em>'.html_safe, edit_basic_price_path(m),:class=>"btn btn-success", method: :get, title: "Edit" %>
+                                  
+                <%= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  basic_price_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
+              </div>
+            </td>
+          </tr>
+          <%end%>
+        <%end%>
+    </tbody>
+  </table>
+</div>
+<script>
+  $('.grade-select').on('change', function() {
+    $('#search_grade').val(this.value)
+  });
+</script>
+<style type="text/css">
+ tfoot input {
+  width: 100%;
+  padding: 3px;
+  box-sizing: border-box;
+  }
+  tfoot {
+    display: table-header-group;
+  }
+  .grade-select {
+    width: 100%;
+}
+  .cover-select {
+    background: #ecf0f5;
+    width: 66%;
+    max-width: 90%;
+    margin: 23px auto;
+    padding: 20px 0px;
+    border: 1px dashed #d7dee6;
+    border-radius: 20px;
+}
+
+.cover-btns{text-align: left!important;}
+</style>
+<script>
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#price_list tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+ 
+    // DataTable
+    var table = $('#price_list').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+ 
+} );
+</script>

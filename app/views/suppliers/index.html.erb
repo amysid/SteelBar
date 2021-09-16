@@ -43,6 +43,8 @@
                   <td><%= m.try(:name)%></td>
                   <td>
                     <%= link_to '<em class="fa fa-eye" aria-hidden="true"></em>'.html_safe, price_lists_path(m),:class=>"btn btn-success", method: :get, title: "View" %>
+                    <%= link_to '<em class="fa fa-usd" aria-hidden="true"></em>'.html_safe, basic_prices_path(m),:class=>"btn btn-success", method: :get, title: "Price" %>
+
                                      
                     <%#= link_to '<em class="fa fa-trash" aria-hidden="true"></em>'.html_safe,  coating_path(m), method: :delete,:class=>"btn btn-danger",title: "Delete", data: {confirm: 'Are you sure to delete?' }%>
                 

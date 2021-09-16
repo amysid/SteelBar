@@ -50,6 +50,7 @@ Rails.application.routes.draw do
      get :pricelistsample
     end
   end
+  resources :basic_prices
   resources :suppliers
 
   resources :general_panels

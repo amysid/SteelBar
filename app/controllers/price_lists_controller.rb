@@ -56,7 +56,10 @@ class PriceListsController < ApplicationController
   
   def update
     @pl = PriceList.find(params["id"])
+    bp = Supplier.find(@pl.supplier_id).basic_prices.where(grade: @pl.grade).first.base_price
+
       if @pl.update(pl_params)
+        @pl.update(base_price: bp,price: bp+@pl.additional_cost)
         flash[:notice] = ["Updated Successfullly."]
         redirect_to suppliers_path
       else
@@ -69,6 +72,8 @@ class PriceListsController < ApplicationController
     @supplier = Supplier.find(params["supplier"]["id"])
     @pl = @supplier.price_lists.new(pl_params)
     if @pl.save!
+      bp = @supplier.basic_prices.where(grade: @pl.grade).first.base_price
+      @pl.update(base_price: bp,price: bp+@pl.additional_cost)
       flash[:notice] = ["Created Successfully."]
       redirect_to price_lists_path(@supplier.id)
     else
