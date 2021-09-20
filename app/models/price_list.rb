@@ -11,6 +11,9 @@ class PriceList < ApplicationRecord
       else
        @pl = @supplier.price_lists.new(grade: row["Grade"], surface: row["Surface"], min_thickness_in_mm: row["MIN (Thickness in  mm)"], max_thickness_in_mm: row["MAX (Thickness in  mm)"], width: row["Width(mm)"], additional_cost: row["Additional Cost(RMB)"] )
        @pl.save!
+       bp = @supplier.basic_prices.where(grade: @pl.grade).first.base_price
+       @pl.update(base_price: bp,price: bp+@pl.additional_cost)
+       
       end
     # PriceList.create! row.to_hash
     end
