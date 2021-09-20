@@ -83,23 +83,41 @@ class EnquiriesController < ApplicationController
     @total_cost = @rmb_cost + @surface_sqm_cost + @coating_cost + @custom_p_cost + @other_charges_length + @other_charges_edge
   end
 
+  # def calculate_surface_cost(surface, enquiry)
+  #   @surface = surface
+  #   density = 7.93
+  #   thickness = enquiry.thick.to_f
+  #   @sqmcost =  @surface&.cost
+  #   if @surface.surface == "SP"
+  #     surface_sqmcost = 350
+  #   elsif @surface.surface == "DP"
+  #     surface_sqmcost = 450
+  #   else
+  #     binding.pry
+  #     surface_sqmcost = (@surface.cost/thickness/density)*1000 
+  #   end
+  #   surfaces_without_process_fee = ['N1','2B','2BA','BA']
+  #   if surfaces_without_process_fee.include?(enquiry.surface)
+  #     surface_sqmcost = surface_sqmcost#process fee,, per SQM calculation So basically, the SQM fee per MT is calculated using the SQM PROCESS FEE and the THICKNESS in the enquiry. The 7.93*1000 is a density constant.
+  #   end   
+  # end
+
+
   def calculate_surface_cost(surface, enquiry)
     @surface = surface
     density = 7.93
     thickness = enquiry.thick.to_f
     @sqmcost =  @surface&.cost
-    if @surface.surface == "SP"
-      surface_sqmcost = 350
-    elsif @surface.surface == "DP"
-      surface_sqmcost = 450
-    else
-      surface_sqmcost = (@surface.cost/thickness/density)*1000 
-    end
+    surface_sqmcost = 350 if @surface.surface == "SP"
+    surface_sqmcost = 450 if @surface.surface == "DP"
     surfaces_without_process_fee = ['N1','2B','2BA','BA']
     if surfaces_without_process_fee.include?(enquiry.surface)
       surface_sqmcost = surface_sqmcost#process fee,, per SQM calculation So basically, the SQM fee per MT is calculated using the SQM PROCESS FEE and the THICKNESS in the enquiry. The 7.93*1000 is a density constant.
     end   
+    surface_sqmcost = (@surface.cost/thickness/density)*1000 
   end
+
+
   
   def edge_cost(edge, enquiry_edge)
     if enquiry_edge == "M"
