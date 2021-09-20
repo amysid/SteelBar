@@ -176,13 +176,13 @@ class EnquiriesController < ApplicationController
 
   def fob_price_calculation(rmb_cost,enquiry)
    exchange_rate_usd = rmb_cost/GeneralPanel.last.exch_rate  + GeneralPanel.last.local_transportation_cost
-   profit = CustomerPanel.find_by(name: enquiry.name).customer_panel_details.where(grade: enquiry.grade.to_i, surface: enquiry.classification)&.first&.profit
+   profit = CustomerPanel.find_by(name: enquiry.name).customer_panel_details.where(grade: enquiry.grade.to_i)&.first&.profit
    final_fob_cost = (exchange_rate_usd*(100+profit))/100
   end
 
   def cif_price_calculation(usd_cost,enquiry)
    final_usd_cost = usd_cost
-   profit = CustomerPanel.find_by(name: enquiry.name).customer_panel_details.where(grade: enquiry.grade.to_i, surface: enquiry.classification)&.first&.profit
+   profit = CustomerPanel.find_by(name: enquiry.name).customer_panel_details.where(grade: enquiry.grade.to_i)&.first&.profit
    final_cif_cost = (final_usd_cost*(100+profit))/100
   end
 
