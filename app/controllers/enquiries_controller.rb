@@ -75,6 +75,11 @@ class EnquiriesController < ApplicationController
     @rmb_cost = 0 if !@price_list&.base_price.present?
     @other_charges_length = other_charges_length(enquiry)
     @other_charges_edge = other_charges_edge(enquiry)
+    @surface_sqm_cost = 0 if !@surface_sqm_cost.present?
+    @coating_cost = 0 if !@coating_cost.present?
+    @custom_p_cost = 0 if !@custom_p_cost.present? 
+    @other_charges_length = 0 if !@other_charges_length.present?
+    @other_charges_edge = 0 if !@other_charges_edge.present?
     @total_cost = @rmb_cost + @surface_sqm_cost + @coating_cost + @custom_p_cost + @other_charges_length + @other_charges_edge
   end
 

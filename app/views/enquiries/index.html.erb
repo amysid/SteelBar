@@ -107,7 +107,7 @@
                 <th> <label> Port </label></th>
                 <% unless User.pluck(:email).exclude?(current_user.email) %>
                 <th><label style="width: 100px">  Unit Price(RMB)</label></th>
-                <th> <label style="width: 65px"> USD Price</label></th>
+                <!-- <th> <label style="width: 65px"> USD Price</label></th> -->
                 <%end%>
                 <th> <label style="width: 65px"> FOB Price</label></th>
                 <th> <label style="width: 65px"> CIF Price</label></th>
@@ -136,7 +136,7 @@
                   <th> Port</th>
                   <% unless User.pluck(:email).exclude?(current_user.email) %>
                   <th> Unit Price(RMB)</th>
-                  <th> USD Price</th>
+                  <!-- <th> USD Price</th> -->
                   <%end%>
                   <th> FOB Price</th>
                   <th> CIF Price</th>
@@ -170,7 +170,7 @@
                     <td><%= user&.port %></td>
                   <% unless User.pluck(:email).exclude?(current_user.email) %>
                     <td><%= user&.unit_price %></td>
-                    <td><%= user&.usd_price %></td>
+                    <!-- <td><%#= user&.usd_price %></td> -->
                   <%end%>
                     <td><%= user&.fob_price %></td>
                     <td><%= user&.cif_price %></td>
