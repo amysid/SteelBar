@@ -4,15 +4,15 @@ class PriceList < ApplicationRecord
     CSV.foreach(file.path, headers: true) do |row|
       @supplier = supplier
       # pls = @supplier.price_lists.where(grade: row["Grade"], surface: row["Surface"]).first
-      pls = @supplier.price_lists.where(grade: row["Grade"], surface: row["Surface"], min_thickness_in_mm: row["MIN (Thickness in  mm)"], max_thickness_in_mm: row["MAX (Thickness in  mm)"]).first
+      pls = @supplier.price_lists.where(grade: row["Grade"], surface: row["Surface"], min_thickness_in_mm: row["MIN (Thickness in  mm)"], max_thickness_in_mm: row["MAX (Thickness in  mm)"], width: row["Width(mm)"]).first
       if pls.present? 
        pls.update_attributes(grade: row["Grade"], surface: row["Surface"], min_thickness_in_mm: row["MIN (Thickness in  mm)"], max_thickness_in_mm: row["MAX (Thickness in  mm)"], width: row["Width(mm)"], additional_cost: row["Additional Cost(RMB)"] ) 
        pls.save!
       else
        @pl = @supplier.price_lists.new(grade: row["Grade"], surface: row["Surface"], min_thickness_in_mm: row["MIN (Thickness in  mm)"], max_thickness_in_mm: row["MAX (Thickness in  mm)"], width: row["Width(mm)"], additional_cost: row["Additional Cost(RMB)"] )
        @pl.save!
-       bp = @supplier.basic_prices.where(grade: @pl.grade).first.base_price
-       @pl.update(base_price: bp,price: bp+@pl.additional_cost)
+       bp = @supplier.basic_prices.where(grade: @pl.grade).first.base_price if @supplier.basic_prices.where(grade: @pl.grade).present?
+       @pl.update(base_price: bp,price: bp+@pl.additional_cost) if @supplier.basic_prices.where(grade: @pl.grade).present?
        
       end
     # PriceList.create! row.to_hash
